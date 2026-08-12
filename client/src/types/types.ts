@@ -137,11 +137,11 @@ export interface ChannelVideosPaginatedResponse {
 
 // ========= Utility based types =========
 
-export type LoginData = Pick<User, 'password'> & {
-    userIdentity?: string;
-    email?: string;
-    username?: string;
-}
+// export type LoginData = Pick<User, 'password'> & {
+//     userIdentity?: string;
+//     email?: string;
+//     username?: string;
+// }
 
 export type UpdateAccountData = Partial<Pick<User, 'firstName' | 'lastName' | 'email'>>;
 
@@ -156,10 +156,10 @@ export interface ChannelProfile extends Pick<User, '_id' | 'firstName' | 'lastNa
     isSubscribed: boolean;
 }
 
-export type RegisterData = Pick<Required<User>, 'username' | 'email' | 'firstName' | 'lastName' | 'password'> & {
-    avatar: FileList;
-    coverImage?: FileList;
-};
+// export type RegisterData = Pick<Required<User>, 'username' | 'email' | 'firstName' | 'lastName' | 'password'> & {
+//     avatar: FileList;
+//     coverImage?: FileList;
+// };
 
 export type WatchHistoryVideoOwner = Pick<User, '_id' | 'firstName' | 'lastName' | 'username' | 'avatar'>;
 
