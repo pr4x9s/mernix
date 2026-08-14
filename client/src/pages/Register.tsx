@@ -5,8 +5,7 @@ import { Link } from 'react-router'
 import { AtSign, Camera, Eye, EyeOff, Loader2, Lock, Mail, User, Video } from 'lucide-react'
 import { registerUserSchema, type RegisterFormData } from '../validators/auth.validator.ts'
 import { zodResolver } from '@hookform/resolvers/zod'
-import Input from '../components/common/Input.tsx'
-import Button from '../components/common/Button.tsx'
+import { Button, Input } from '../components/common/index.ts'
 
 
 
@@ -302,6 +301,7 @@ const Register = () => {
 								{isPending ? (
 									<>
 										<Loader2 className='animate-spin' size={18} />
+										<span>Processing Registration...</span>
 									</>
 								) : (
 									'Create Account'
