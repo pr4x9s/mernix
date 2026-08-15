@@ -1,7 +1,7 @@
-import { useDashboardStats } from '../../hooks/useDashboardData.ts'
+import { useDashboardStats } from '../../../hooks/useDashboardData.ts'
 import { Commet } from 'react-loading-indicators'
 import { Eye, Users, ThumbsUp, Video, AlertCircle, BarChart3, type LucideIcon } from 'lucide-react'
-import { useAuthStore } from '../../store/authStore.ts'
+import { useAuthStore } from '../../../store/authStore.ts'
 import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 

@@ -1,11 +1,11 @@
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import { useLogin } from '../hooks/useLogin.ts'
-import { loginUserSchema, type LoginFormData  } from '../validators/auth.validator.ts'
+import { useLogin } from '../../hooks/useLogin.ts'
+import { loginUserSchema, type LoginFormData  } from '../../validators/auth.validator.ts'
 import { Link } from 'react-router'
 import { AtSign, Eye, EyeOff, Loader2, Lock, Video } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
-import { Button, Input } from '../components/common/index.ts'
+import { Button, Input } from '../../components/common/index.ts'
 
 
 

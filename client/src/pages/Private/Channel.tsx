@@ -1,9 +1,9 @@
-import { useChannelProfile } from '../hooks/useChannelProfile.ts'
+import { useChannelProfile } from '../../hooks/useChannelProfile.ts'
 import { Commet } from 'react-loading-indicators'
 import { Grid, ListVideo, User as UserIcon, Edit, UserPlus, Calendar } from 'lucide-react'
 import { format, formatDistanceToNow } from 'date-fns'
 import { useNavigate, useSearchParams } from 'react-router'
-import type { TabItems } from '../types/types.ts'
+import type { TabItems } from '../../types/types.ts'
 
 
 

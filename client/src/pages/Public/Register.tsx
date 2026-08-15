@@ -1,11 +1,11 @@
 import { useState, type ChangeEvent } from 'react'
-import { useRegister } from '../hooks/useRegister.ts'
+import { useRegister } from '../../hooks/useRegister.ts'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { Link } from 'react-router'
 import { AtSign, Camera, Eye, EyeOff, Loader2, Lock, Mail, User, Video } from 'lucide-react'
-import { registerUserSchema, type RegisterFormData } from '../validators/auth.validator.ts'
+import { registerUserSchema, type RegisterFormData } from '../../validators/auth.validator.ts'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Input } from '../components/common/index.ts'
+import { Button, Input } from '../../components/common/index.ts'
 
 
 

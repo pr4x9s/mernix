@@ -1,8 +1,8 @@
 import { Link, useSearchParams } from 'react-router'
 import { BarChart3, CloudUpload, Video } from 'lucide-react'
-import { useAuthStore } from '../../store/authStore.ts'
-import type { TabItems } from '../../types/types.ts'
-import { StudioAnalytics, StudioMyVideos } from '../index.ts'
+import { useAuthStore } from '../../../store/authStore.ts'
+import type { TabItems } from '../../../types/types.ts'
+import { StudioAnalytics, StudioMyVideos } from '../../index.ts'
 
 
 
