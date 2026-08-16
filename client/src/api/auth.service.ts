@@ -1,5 +1,5 @@
 import type { AuthResponse, ChannelProfile, PaginatedResponse, User, WatchHistoryVideoItem } from '../types/types.ts'
-import type { ChangeCurrentPasswordFormData, LoginFormData, UpdateAccountDetailsFormData } from '../validators/auth.validator.ts';
+import type { ChangeCurrentPasswordFormData, LoginFormData, RegisterFormData, UpdateAccountDetailsFormData } from '../validators/auth.validator.ts';
 import api from './api.ts'
 
 
@@ -7,7 +7,19 @@ import api from './api.ts'
 export const authService = {
     
     // ======= 1. Authentication & Session =======
-    register: async (data: FormData): Promise<AuthResponse<User>> => {
+    register: async (data: RegisterFormData): Promise<AuthResponse<User>> => {
+        const formData = new FormData();
+
+		formData.append('firstName', data.firstName.trim());
+		formData.append('lastName', data.lastName.trim());
+		formData.append('username', data.username.toLowerCase().trim());
+		formData.append('email', data.email.toLowerCase().trim());
+		formData.append('password', data.password);
+		formData.append('confirmPassword', data.confirmPassword);
+
+		if (data.avatar) formData.append('avatar', data.avatar);
+		if (data.coverImage) formData.append('coverImage', data.coverImage);
+
         const response = await api.post<AuthResponse<User>>('/users/register', data, {
             headers: {
                 'Content-Type': 'multipart/form-data'

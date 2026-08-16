@@ -43,19 +43,7 @@ const Register = () => {
 	};
 
 	const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
-		const formData = new FormData();
-
-		formData.append('firstName', data.firstName.trim());
-		formData.append('lastName', data.lastName.trim());
-		formData.append('username', data.username.toLowerCase().trim());
-		formData.append('email', data.email.toLowerCase().trim());
-		formData.append('password', data.password);
-		formData.append('confirmPassword', data.confirmPassword);
-
-		if (data.avatar) formData.append('avatar', data.avatar);
-		if (data.coverImage) formData.append('coverImage', data.coverImage);
-
-		registerUser(formData);
+		registerUser(data);
 	};
 
 	return (
