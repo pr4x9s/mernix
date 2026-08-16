@@ -1,5 +1,5 @@
 import type { AuthResponse, ChannelProfile, PaginatedResponse, User, WatchHistoryVideoItem } from '../types/types.ts'
-import type { ChangeCurrentPasswordFormData, LoginFormData, RegisterFormData, UpdateAccountDetailsFormData } from '../validators/auth.validator.ts';
+import type { ChangeCurrentPasswordFormData, LoginFormData, RegisterFormData, SingleAvatarFormData, SingleCoverFormData, UpdateAccountDetailsFormData } from '../validators/auth.validator.ts';
 import api from './api.ts'
 
 
@@ -68,21 +68,19 @@ export const authService = {
 
 
     // ======= 3. Media/Asset updates =======
-    updateAvatar: async (formData: FormData): Promise<AuthResponse<User>> => {
-        const response = await api.patch<AuthResponse<User>>('/users/update-user-avatar', formData, {
-            headers: {
-                "Content-Type": 'multipart/form-data'
-            }
-        });
+    updateAvatar: async (data: SingleAvatarFormData): Promise<AuthResponse<User>> => {
+        const formData = new FormData();
+        if (data.avatar) formData.append('avatar', data.avatar);
+
+        const response = await api.patch<AuthResponse<User>>('/users/update-user-avatar', formData);
         return response.data;
     },
 
-    updateCoverImage: async (formData: FormData): Promise<AuthResponse<User>> => {
-        const response = await api.patch<AuthResponse<User>>('/users/update-user-cover', formData, {
-            headers: {
-                "Content-Type": 'multipart/form-data'
-            }
-        });
+    updateCoverImage: async (data: SingleCoverFormData): Promise<AuthResponse<User>> => {
+        const formData = new FormData();
+        if (data.coverImage) formData.append('coverImage', data.coverImage);
+
+        const response = await api.patch<AuthResponse<User>>('/users/update-user-cover', formData);
         return response.data;
     },
     // ======= 3. Media/Asset updates =======

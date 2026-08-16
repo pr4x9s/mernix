@@ -4,6 +4,7 @@ import type { ApiErrorResponse, AuthResponse, ToastId, UpdateAccountData, User }
 import { authService } from '../api/auth.service.ts'
 import { toast } from 'sonner'
 import type { AxiosError } from 'axios'
+import type { SingleAvatarFormData, SingleCoverFormData } from '../validators/auth.validator.ts'
 
 
 
@@ -39,8 +40,8 @@ export const useUpdateSettings = () => {
     });
 
 
-    const updateAvatarMutation = useMutation<AuthResponse<User>, AxiosError<ApiErrorResponse>, FormData, ToastId>({
-        mutationFn: (formData) => authService.updateAvatar(formData),
+    const updateAvatarMutation = useMutation<AuthResponse<User>, AxiosError<ApiErrorResponse>, SingleAvatarFormData, ToastId>({
+        mutationFn: (data: SingleAvatarFormData) => authService.updateAvatar(data),
 
         onMutate: () => {
             return {
@@ -66,8 +67,8 @@ export const useUpdateSettings = () => {
     });
 
 
-    const updateCoverImageMutation = useMutation<AuthResponse<User>, AxiosError<ApiErrorResponse>, FormData, ToastId>({
-        mutationFn: (formData) => authService.updateCoverImage(formData),
+    const updateCoverImageMutation = useMutation<AuthResponse<User>, AxiosError<ApiErrorResponse>, SingleCoverFormData, ToastId>({
+        mutationFn: (data: SingleCoverFormData) => authService.updateCoverImage(data),
 
         onMutate: () => {
             return {

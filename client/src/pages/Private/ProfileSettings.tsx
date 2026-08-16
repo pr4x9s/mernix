@@ -148,10 +148,10 @@ const ProfileSettings = () => {
             formData.append(uploadType, cleanCroppedFile);
 
             if (uploadType === 'avatar') {
-                updateAvatar(formData);
+                updateAvatar({ avatar: cleanCroppedFile })
             }
             else {
-                updateCoverImage(formData);
+                updateCoverImage({ coverImage: cleanCroppedFile });
             }
 
             handleCloseModal();
