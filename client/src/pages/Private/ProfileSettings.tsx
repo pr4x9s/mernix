@@ -286,7 +286,7 @@ const ProfileSettings = () => {
 
 								<Button
 									type='submit'
-									disabled={isUpdatingAvatar}
+									disabled={isUpdatingDetails}
 									title={isUpdatingDetails ? 'Saving...' : 'Save Changes'}
 									fullWidth={false}
 								>
