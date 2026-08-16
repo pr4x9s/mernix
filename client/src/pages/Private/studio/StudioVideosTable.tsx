@@ -1,10 +1,9 @@
 import { useMemo, useState } from 'react'
 import { createColumnHelper, getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable, type SortingState } from '@tanstack/react-table'
-import type { VideoFeedItem } from '../../types/types.ts'
+import type { VideoFeedItem } from '../../../types/types.ts'
 import { Trash2, Edit, Eye, EyeOff, Search, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react'
 import { format, formatDistanceToNow } from 'date-fns'
-import ConfirmationModal from '../../components/common/ConfirmationModal.tsx'
-import DataTable from '../../components/common/DataTable.tsx'
+import { ConfirmationModal, DataTable } from '../../../components/common/index.ts'
 
 
 interface TableProps {

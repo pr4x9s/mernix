@@ -2,8 +2,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '../store/authStore.ts'
 import type { ApiErrorResponse, AuthResponse, ToastId, UpdateAccountData, User } from '../types/types.ts'
 import { authService } from '../api/auth.service.ts'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import type { AxiosError } from 'axios'
+import type { SingleAvatarFormData, SingleCoverFormData } from '../validators/auth.validator.ts'
 
 
 
@@ -17,9 +18,7 @@ export const useUpdateSettings = () => {
 
         onMutate: () => {
             return {
-                toastId: toast.loading('Updating account details...', {
-                    duration: 3000
-                })
+                toastId: toast.loading('Updating account details...')
             }
         },
 
@@ -28,29 +27,25 @@ export const useUpdateSettings = () => {
             queryClient.invalidateQueries({ queryKey: ['currentUser'] });
             queryClient.invalidateQueries({ queryKey: ['channelProfile'] });
             toast.success(response.message || 'Profile details updated successfully!', {
-                id: context?.toastId,
-                duration: 3000
+                id: context?.toastId
             });
         },
 
         onError: (error, _, context) => {
             const serverErrorMessage = error?.response?.data?.message || 'Failed to update details';
             toast.error(serverErrorMessage || 'Failed to update details', {
-                id: context?.toastId,
-                duration: 3000
+                id: context?.toastId
             });
         }
     });
 
 
-    const updateAvatarMutation = useMutation<AuthResponse<User>, AxiosError<ApiErrorResponse>, FormData, ToastId>({
-        mutationFn: (formData) => authService.updateAvatar(formData),
+    const updateAvatarMutation = useMutation<AuthResponse<User>, AxiosError<ApiErrorResponse>, SingleAvatarFormData, ToastId>({
+        mutationFn: (data: SingleAvatarFormData) => authService.updateAvatar(data),
 
         onMutate: () => {
             return {
-                toastId: toast.loading('Uploading fresh avatar...', {
-                    duration: 3000
-                })
+                toastId: toast.loading('Uploading fresh avatar...')
             }
         },
 
@@ -59,29 +54,25 @@ export const useUpdateSettings = () => {
             queryClient.invalidateQueries({ queryKey: ['currentUser'] });
             queryClient.invalidateQueries({ queryKey: ['channelProfile'] });
             toast.success( response.message || 'Avatar updated successfully!', {
-                id: context?.toastId,
-                duration: 3000
+                id: context?.toastId
             });
         },
 
         onError: (error, _, context) => {
             const serverErrorMessage = error?.response?.data?.message || 'Failed to upload avatar';
             toast.error(serverErrorMessage, {
-                id: context?.toastId,
-                duration: 3000
+                id: context?.toastId
             })
         }
     });
 
 
-    const updateCoverImageMutation = useMutation<AuthResponse<User>, AxiosError<ApiErrorResponse>, FormData, ToastId>({
-        mutationFn: (formData) => authService.updateCoverImage(formData),
+    const updateCoverImageMutation = useMutation<AuthResponse<User>, AxiosError<ApiErrorResponse>, SingleCoverFormData, ToastId>({
+        mutationFn: (data: SingleCoverFormData) => authService.updateCoverImage(data),
 
         onMutate: () => {
             return {
-                toastId: toast.loading('Uploading channel banner...', {
-                    duration: 3000
-                })
+                toastId: toast.loading('Uploading channel banner...')
             }
         },
 
@@ -90,16 +81,14 @@ export const useUpdateSettings = () => {
             queryClient.invalidateQueries({ queryKey: ['currentUser'] });
             queryClient.invalidateQueries({ queryKey: ['channelProfile'] });
             toast.success(response.message || 'Cover banner updated successfully!', {
-                id: context?.toastId,
-                duration: 3000
+                id: context?.toastId
             })
         },
 
         onError: (error, _, context) => {
             const serverErrorMessage = error?.response?.data?.message || 'Failed to upload cover banner';
             toast.error(serverErrorMessage, {
-                id: context?.toastId,
-                duration: 3000
+                id: context?.toastId
             })
         }
     });

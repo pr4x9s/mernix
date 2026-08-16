@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { useDashboardVideos } from '../../hooks/useDashboardData.ts'
-import { useBulkActionsVideoMutations } from '../../hooks/useBulkActionsVideoMutations.ts'
-import { useTogglePublish, useDeleteVideo } from '../../hooks/useVideoMutations.ts'
+import { useDashboardVideos } from '../../../hooks/useDashboardData.ts'
+import { useBulkActionsVideoMutations } from '../../../hooks/useBulkActionsVideoMutations.ts'
+import { useTogglePublish, useDeleteVideo } from '../../../hooks/useVideoMutations.ts'
 import StudioVideosTable from './StudioVideosTable.tsx'
 import { AlertCircle, Loader2, VideoOff } from 'lucide-react'
 
