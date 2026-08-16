@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
-import { useWatchHistory } from '../hooks/useWatchHistory.ts'
+import { useWatchHistory } from '../../hooks/useWatchHistory.ts'
 import { Play, Clock, History, Loader2, Eye } from 'lucide-react'
-import { type WatchHistoryVideoItem } from '../types/types.ts'
+import { type WatchHistoryVideoItem } from '../../types/types.ts'
 import { Link } from 'react-router'
 import { format, formatDistanceToNow } from 'date-fns'
-import { formatDuration } from '../utils/formatDuration.ts'
+import { formatDuration } from '../../utils/formatDuration.ts'
 
 
 

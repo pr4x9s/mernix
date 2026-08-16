@@ -2,8 +2,9 @@ import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { authService } from '../api/auth.service.ts'
 import { useAuthStore } from '../store/authStore'
-import type { LoginData, AuthResponse } from '../types/types.ts'
-import { toast } from 'react-hot-toast'
+import type { AuthResponse } from '../types/types.ts'
+import { toast } from 'sonner'
+import type { LoginFormData } from '../validators/auth.validator.ts'
 
 
 
@@ -12,14 +13,12 @@ export const useLogin = () => {
     const setLoginModalOpen = useAuthStore((state) => state.setLoginModalOpen);
 
     return useMutation({
-        mutationFn: (data: LoginData) => authService.login(data),
+        mutationFn: (data: LoginFormData) => authService.login(data),
 
         onSuccess: (response) => {
             setAuth(response.data.user);
             setLoginModalOpen(false);
-            toast.success(`Welcome back ${response.data.user.firstName}!`, {
-                duration: 3000
-            });
+            toast.success(`Welcome back ${response.data.user.firstName}!`);
         },
         
         onError: (error: AxiosError<AuthResponse<null>>) => {

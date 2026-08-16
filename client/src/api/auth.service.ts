@@ -1,4 +1,5 @@
-import type { AuthResponse, ChangePasswordData, ChannelProfile, LoginData, PaginatedResponse, UpdateAccountData, User, WatchHistoryVideoItem } from '../types/types.ts'
+import type { AuthResponse, ChannelProfile, PaginatedResponse, User, WatchHistoryVideoItem } from '../types/types.ts'
+import type { ChangeCurrentPasswordFormData, LoginFormData, RegisterFormData, SingleAvatarFormData, SingleCoverFormData, UpdateAccountDetailsFormData } from '../validators/auth.validator.ts';
 import api from './api.ts'
 
 
@@ -6,7 +7,19 @@ import api from './api.ts'
 export const authService = {
     
     // ======= 1. Authentication & Session =======
-    register: async (data: FormData): Promise<AuthResponse<User>> => {
+    register: async (data: RegisterFormData): Promise<AuthResponse<User>> => {
+        const formData = new FormData();
+
+		formData.append('firstName', data.firstName.trim());
+		formData.append('lastName', data.lastName.trim());
+		formData.append('username', data.username.toLowerCase().trim());
+		formData.append('email', data.email.toLowerCase().trim());
+		formData.append('password', data.password);
+		formData.append('confirmPassword', data.confirmPassword);
+
+		if (data.avatar) formData.append('avatar', data.avatar);
+		if (data.coverImage) formData.append('coverImage', data.coverImage);
+
         const response = await api.post<AuthResponse<User>>('/users/register', data, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -15,7 +28,7 @@ export const authService = {
         return response.data;
     },
 
-    login: async (data: LoginData): Promise<AuthResponse<{ user: User }>> => {
+    login: async (data: LoginFormData): Promise<AuthResponse<{ user: User }>> => {
         const response = await api.post<AuthResponse<{ user: User }>>('/users/login', data);
         return response.data;
     },
@@ -42,12 +55,12 @@ export const authService = {
         return response.data;
     },
 
-    changeCurrentPassword: async (data: ChangePasswordData): Promise<AuthResponse<null>> => {
+    changeCurrentPassword: async (data: ChangeCurrentPasswordFormData): Promise<AuthResponse<null>> => {
         const response = await api.post<AuthResponse<null>>('/users/change-current-password', data);
         return response.data;
     },
 
-    updateAccountDetails: async (data: UpdateAccountData): Promise<AuthResponse<User>> => {
+    updateAccountDetails: async (data: UpdateAccountDetailsFormData): Promise<AuthResponse<User>> => {
         const response = await api.patch<AuthResponse<User>>('/users/update-account-details', data);
         return response.data;
     },
@@ -55,21 +68,19 @@ export const authService = {
 
 
     // ======= 3. Media/Asset updates =======
-    updateAvatar: async (formData: FormData): Promise<AuthResponse<User>> => {
-        const response = await api.patch<AuthResponse<User>>('/users/update-user-avatar', formData, {
-            headers: {
-                "Content-Type": 'multipart/form-data'
-            }
-        });
+    updateAvatar: async (data: SingleAvatarFormData): Promise<AuthResponse<User>> => {
+        const formData = new FormData();
+        if (data.avatar) formData.append('avatar', data.avatar);
+
+        const response = await api.patch<AuthResponse<User>>('/users/update-user-avatar', formData);
         return response.data;
     },
 
-    updateCoverImage: async (formData: FormData): Promise<AuthResponse<User>> => {
-        const response = await api.patch<AuthResponse<User>>('/users/update-user-cover', formData, {
-            headers: {
-                "Content-Type": 'multipart/form-data'
-            }
-        });
+    updateCoverImage: async (data: SingleCoverFormData): Promise<AuthResponse<User>> => {
+        const formData = new FormData();
+        if (data.coverImage) formData.append('coverImage', data.coverImage);
+
+        const response = await api.patch<AuthResponse<User>>('/users/update-user-cover', formData);
         return response.data;
     },
     // ======= 3. Media/Asset updates =======

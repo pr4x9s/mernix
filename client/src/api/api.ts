@@ -8,9 +8,6 @@ import { authService } from './auth.service.ts';
 const api: AxiosInstance = axios.create({
     baseURL: conf.baseUrl,
     withCredentials: true,
-    headers: {
-        'Content-Type': 'application/json',
-    }
 });
 
 
@@ -18,14 +15,10 @@ const api: AxiosInstance = axios.create({
 // // req. interceptor only needed for body/header token strategy (no plans to use it)
 // api.interceptors.request.use(
 //     (config) => {
-//         const token = useAuthStore.getState().accessToken;
-//         if (token) {
-//             config.headers.Authorization = `Bearer ${token}`;
+//         if (config.data instanceof FormData) {
+//             delete config.headers['Content-Type'];
 //         }
 //         return config;
-//     },
-//     (error) => {
-//         return Promise.reject(error);
 //     }
 // );
 
