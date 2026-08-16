@@ -70,7 +70,7 @@ export interface ApiErrorResponse {
 }
 
 export interface ToastId {
-    toastId: string;
+    toastId: string | number;
 }
 
 export interface PaginatedResponse<T> {

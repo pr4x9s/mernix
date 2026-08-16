@@ -56,7 +56,7 @@ const createBrowserImageSchema = (fieldName: string, maxSizeBytes: number, isOpt
 			if (!isValidMime && !isValidExtention) {
 				ctx.addIssue({
 					code: 'custom',
-					message: `Invalid ${fieldName} format. Only JPEG, PNG, and WebP images are allowed`,
+					message: `Invalid ${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} format. Only JPEG, PNG, and WebP images are allowed`,
 				});
 
 				return;
@@ -174,12 +174,31 @@ export const changeCurrentPasswordSchema = z
 		oldPassword: z
 			.string()
 			.trim()
+			.min(1, 'Current password is required')
 			.regex(/^((?!\p{Emoji_Presentation}).)*$/u, { error: 'Emojis are not allowed' }),
 		newPassword: strongPasswordSchema,
+		confirmNewPassword: z
+			.string()
+			.trim()
+			.min(1, 'Please confirm your new password')
+			.regex(/^((?!\p{Emoji_Presentation}).)*$/u, { error: 'Emojis are not allowed' }),
 	})
-	.refine(({ oldPassword, newPassword }) => oldPassword !== newPassword, {
-		error: 'New password cannot be the same as your old password',
-		path: ['newPassword'],
+	.superRefine(({ oldPassword, newPassword, confirmNewPassword }, ctx) => {
+		if (oldPassword && newPassword && oldPassword === newPassword) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'New password cannot be the same as your old password',
+				path: ['newPassword']
+			});
+		}
+
+		if (newPassword !== confirmNewPassword) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'New passwords do not match',
+				path: ['confirmNewPassword']
+			});
+		}
 	});
 
 export type ChangeCurrentPasswordFormData = z.infer<typeof changeCurrentPasswordSchema>;
@@ -190,18 +209,22 @@ export const updateAccountDetailsSchema = baseRegisterUserSchema.pick({
 	firstName: true,
 	lastName: true,
 	email: true,
-});
+}).partial();
 
 export type UpdateAccountDetailsFormData = z.infer<typeof updateAccountDetailsSchema>;
 
 
 
-export const singleAvatarUpdateSchema = createBrowserImageSchema('avatar', AVATAR_MAX, false);
+export const singleAvatarUpdateSchema = z.object({
+    avatar: createBrowserImageSchema('avatar', AVATAR_MAX, false)
+});
 
 export type SingleAvatarFormData = z.infer<typeof singleAvatarUpdateSchema>;
 
 
 
-export const singleCoverImageUpdateSchema = createBrowserImageSchema('coverImage', COVER_MAX, true);
+export const singleCoverImageUpdateSchema = z.object({
+	coverImage: createBrowserImageSchema('coverImage', COVER_MAX, false)
+});
 
 export type SingleCoverFormData = z.infer<typeof singleCoverImageUpdateSchema>;
