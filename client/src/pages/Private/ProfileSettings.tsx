@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, type ChangeEvent } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { useSearchParams } from 'react-router'
 import { toast } from 'sonner'
 import AvatarEditor, { type AvatarEditorRef } from 'react-avatar-editor'
@@ -68,7 +68,7 @@ const ProfileSettings = () => {
 		register: registerAccount,
 		handleSubmit: handleAccountSubmit,
 		setFocus: setAccountFocus,
-		formState: { errors: accountErrors },
+		formState: { errors: accountErrors, isDirty: isAccountDirty },
 		reset: resetAccountForm,
 	} = useForm<UpdateAccountDetailsFormData>({
 		resolver: zodResolver(updateAccountDetailsSchema),
@@ -165,9 +165,13 @@ const ProfileSettings = () => {
 		if (coverInputRef.current) coverInputRef.current.value = '';
 	};
 
-	const onAccountSubmit = (data: UpdateAccountDetailsFormData) => updateDetails(data);
+	const onAccountSubmit: SubmitHandler<UpdateAccountDetailsFormData> = (data) => {
+		updateDetails(data, {
+			onSuccess: () => resetAccountForm(data)
+		});
+	};
 
-	const onPasswordSubmit = (data: ChangeCurrentPasswordFormData) => {
+	const onPasswordSubmit: SubmitHandler<ChangeCurrentPasswordFormData> = (data) => {
 		changePassword(
 			{
                 oldPassword: data.oldPassword,
@@ -286,8 +290,8 @@ const ProfileSettings = () => {
 
 								<Button
 									type='submit'
-									disabled={isUpdatingDetails}
-									title={isUpdatingDetails ? 'Saving...' : 'Save Changes'}
+									disabled={!isAccountDirty || isUpdatingDetails}
+									title={isUpdatingDetails ? 'Saving...' : !isAccountDirty ? 'No Changes to Save' : 'Save Changes'}
 									fullWidth={false}
 								>
 									{isUpdatingDetails ? (
@@ -295,6 +299,9 @@ const ProfileSettings = () => {
 											<Loader2 size={16} className='animate-spin' />
 											<span>Saving...</span>
 										</>
+									) : !isAccountDirty ?
+									(
+										'No Changes to Save'
 									) : (
 										'Save Changes'
 									)}
