@@ -1,4 +1,5 @@
-import type { AuthResponse, ChangePasswordData, ChannelProfile, LoginData, PaginatedResponse, UpdateAccountData, User, WatchHistoryVideoItem } from '../types/types.ts'
+import type { AuthResponse, ChannelProfile, PaginatedResponse, User, WatchHistoryVideoItem } from '../types/types.ts'
+import type { ChangeCurrentPasswordFormData, LoginFormData, UpdateAccountDetailsFormData } from '../validators/auth.validator.ts';
 import api from './api.ts'
 
 
@@ -15,7 +16,7 @@ export const authService = {
         return response.data;
     },
 
-    login: async (data: LoginData): Promise<AuthResponse<{ user: User }>> => {
+    login: async (data: LoginFormData): Promise<AuthResponse<{ user: User }>> => {
         const response = await api.post<AuthResponse<{ user: User }>>('/users/login', data);
         return response.data;
     },
@@ -42,12 +43,12 @@ export const authService = {
         return response.data;
     },
 
-    changeCurrentPassword: async (data: ChangePasswordData): Promise<AuthResponse<null>> => {
+    changeCurrentPassword: async (data: ChangeCurrentPasswordFormData): Promise<AuthResponse<null>> => {
         const response = await api.post<AuthResponse<null>>('/users/change-current-password', data);
         return response.data;
     },
 
-    updateAccountDetails: async (data: UpdateAccountData): Promise<AuthResponse<User>> => {
+    updateAccountDetails: async (data: UpdateAccountDetailsFormData): Promise<AuthResponse<User>> => {
         const response = await api.patch<AuthResponse<User>>('/users/update-account-details', data);
         return response.data;
     },
