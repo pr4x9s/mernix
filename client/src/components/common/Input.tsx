@@ -8,7 +8,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     rightElement?: ReactNode;
     error?: string;
     containerClassName?: string;
-    isOptionalField: boolean;
+    isOptionalField?: boolean;
 }
 
 
