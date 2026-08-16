@@ -1,21 +1,20 @@
 import { useMutation } from '@tanstack/react-query'
-import type { ApiErrorResponse, AuthResponse, ChangePasswordData, ToastId } from '../types/types.ts'
+import type { ApiErrorResponse, AuthResponse, ToastId } from '../types/types.ts'
 import { authService } from '../api/auth.service.ts'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import type { AxiosError } from 'axios'
+import type { ChangeCurrentPasswordFormData } from '../validators/auth.validator.ts'
 
 
 
 export const useChangePassword = () => {
 
-    const changePasswordMutation = useMutation<AuthResponse<null>, AxiosError<ApiErrorResponse>, ChangePasswordData, ToastId>({
+    const changePasswordMutation = useMutation<AuthResponse<null>, AxiosError<ApiErrorResponse>, ChangeCurrentPasswordFormData, ToastId>({
         mutationFn: (data) => authService.changeCurrentPassword(data),
 
         onMutate: () => {
             return {
-                toastId: toast.loading('Securing your identity...', {
-                    duration: 3000
-                })
+                toastId: toast.loading('Securing your identity...')
             }
         },
 
