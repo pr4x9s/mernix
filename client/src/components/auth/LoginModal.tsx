@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router'
 import { useAuthStore } from '../../store/authStore.ts'
 import { Video, X } from 'lucide-react'
+import { Button } from '../common/index.ts'
 
 
 
@@ -26,9 +27,10 @@ const LoginModal = () => {
 			<div className='relative w-full max-w-sm bg-white dark:bg-zinc-900 rounded-4xl shadow-2xl overflow-hidden p-8 text-center border border-zinc-200 dark:border-zinc-800'>
 				<button
 					onClick={() => setLoginModalOpen(false)}
-					className='absolute right-5 top-5 p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors cursor-pointer'
+					className='absolute right-5 top-5 p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-all disabled:opacity-50 rounded-full cursor-pointer active:scale-[0.90] group'
+					title='Close'
 				>
-					<X size={20} />
+					<X size={20} className='group-hover:rotate-90 transition ease-in duration-300' />
 				</button>
 
 				<div className='size-16 bg-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-purple-500/40 rotate-3'>
@@ -44,18 +46,18 @@ const LoginModal = () => {
 				</p>
 
 				<div className='flex flex-col gap-3'>
-					<button
+					<Button
 						onClick={handleGoToFullLogin}
-						className='w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3.5 rounded-xl transition-all active:scale-[0.98] shadow-md shadow-purple-500/20 cursor-pointer'
+						className=''
 					>
 						Sign in
-					</button>
-					<button
+					</Button>
+					<Button
 						onClick={() => setLoginModalOpen(false)}
-						className='w-full bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold py-3.5 rounded-xl transition-all cursor-pointer'
+						className='bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white shadow-zinc-500/20'
 					>
 						Maybe Later
-					</button>
+					</Button>
 				</div>
 
 				<Link

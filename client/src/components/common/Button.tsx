@@ -1,11 +1,12 @@
 import clsx from 'clsx';
-import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react'
 
 
 type CommonProps = {
     children: ReactNode,
     className?: string;
     fullWidth?: boolean;
+    ref?: Ref<HTMLButtonElement>;
 };
 
 type ButtonProps = CommonProps & ButtonHTMLAttributes<HTMLButtonElement>;
@@ -15,6 +16,7 @@ const Button = ({
     type = 'button',
     className = '',
     fullWidth = true,
+    ref,
     ...props
 }: ButtonProps) => {
 
@@ -25,9 +27,10 @@ const Button = ({
 
 	return (
         <button
+            ref={ref}
             type={type}
             className={finalClass}
-            {...props as ButtonHTMLAttributes<HTMLButtonElement>}
+            {...props}
         >
             {children}
         </button>
