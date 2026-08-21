@@ -1,6 +1,7 @@
 import { X, AlertTriangle } from 'lucide-react'
 import { useEffect } from 'react'
-import type { ConfirmationModalProps } from '../../types/types'
+import type { ConfirmationModalProps } from '../../types/types.ts'
+import { Button } from './index.ts'
 
 
 
@@ -44,10 +45,10 @@ const ConfirmationModal = ({
 				<button
 					disabled={isPending}
 					onClick={onClose}
-					className='absolute top-2 right-2 p-1.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors disabled:opacity-50 cursor-pointer'
+					className='absolute top-2 right-2 p-1.5 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors disabled:opacity-50 cursor-pointer group'
                     title='Close'
 				>
-					<X size={18} />
+					<X size={18} className='group-hover:rotate-90 transition ease-in duration-300' />
 				</button>
 
 				{/* header */}
@@ -67,24 +68,26 @@ const ConfirmationModal = ({
 
 				{/* footer action btns container */}
 				<div className='flex justify-end gap-3 mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800'>
-					<button
+					<Button
 						type='button'
 						disabled={isPending}
 						onClick={onClose}
-						className='px-4 py-2.5 rounded-xl text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition-colors disabled:opacity-50 cursor-pointer'
+						className='bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800/60 text-zinc-900 dark:text-white shadow-none'
                         title={cancelText}
+						fullWidth={false}
 					>
 						{cancelText}
-					</button>
-					<button
+					</Button>
+					<Button
 						type='button'
 						disabled={isPending}
 						onClick={onConfirm}
-						className='px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-red-600 hover:bg-red-700 transition-all active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-red-600/10 cursor-pointer'
+						className='text-white bg-red-600 hover:bg-red-700 shadow-lg shadow-red-600/10 cursor-pointer'
                         title={isPending ? 'Processing...' : confirmText}
+						fullWidth={false}
 					>
 						{isPending ? 'Processing...' : confirmText}
-					</button>
+					</Button>
 				</div>
 			</div>
 		</div>
