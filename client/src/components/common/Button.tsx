@@ -6,7 +6,7 @@ type CommonProps = {
     children: ReactNode,
     className?: string;
     fullWidth?: boolean;
-    ref?: Ref<HTMLButtonElement>
+    ref?: Ref<HTMLButtonElement>;
 };
 
 type ButtonProps = CommonProps & ButtonHTMLAttributes<HTMLButtonElement>;
