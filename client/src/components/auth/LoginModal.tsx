@@ -28,7 +28,7 @@ const LoginModal = () => {
 				<button
 					onClick={() => setLoginModalOpen(false)}
 					className='absolute right-5 top-5 p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-all disabled:opacity-50 rounded-full cursor-pointer active:scale-[0.90] group'
-					title='Close'
+					title='Close Now'
 				>
 					<X size={20} className='group-hover:rotate-90 transition ease-in duration-300' />
 				</button>
