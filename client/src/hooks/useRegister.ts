@@ -19,9 +19,7 @@ export const useRegister = () => {
         },
         onError: (error: AxiosError<AuthResponse<null>>) => {
             const message = error.response?.data?.message || 'Registration failed. Please try again.';
-            toast.error(message, {
-                duration: 3000
-            });
+            toast.error(message);
         },
     });
 };

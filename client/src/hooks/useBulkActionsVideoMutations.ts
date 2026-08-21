@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { ToastId, VideoIdStr } from '../types/types.ts'
 import { videoService } from '../api/video.service.ts'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 
 
 
@@ -20,22 +20,18 @@ export const useBulkActionsVideoMutations = () => {
         },
         onMutate: (videoIds) => {
             return {
-                toastId: toast.loading(`Toggling visibility status for ${videoIds.length} videos...`, {
-                    duration: 3000
-                })
+                toastId: toast.loading(`Toggling visibility status for ${videoIds.length} videos...`)
             };
         },
         onSuccess: (_, videoIds, context) => {
             invalidateStudioCache();
             toast.success(`Toggled visibility for ${videoIds.length} videos`, {
-                id: context?.toastId,
-                duration: 3000
+                id: context?.toastId
             });
         },
         onError: (error, _, context) => {
             toast.error(error.message || 'Bulk toggle operation failed', {
-                id: context?.toastId,
-                duration: 3000
+                id: context?.toastId
             })
         }
     });
@@ -46,22 +42,18 @@ export const useBulkActionsVideoMutations = () => {
         },
         onMutate: (videoIds) => {
             return {
-                toastId: toast.loading(`Deleting ${videoIds.length} videos from your channel...`, {
-                    duration: 3000
-                })
+                toastId: toast.loading(`Deleting ${videoIds.length} videos from your channel...`)
             };
         },
         onSuccess: (_, videoIds, context) => {
             invalidateStudioCache();
             toast.success(`Deleted ${videoIds.length} videos from your channel`, {
-                id: context?.toastId,
-                duration: 3000
+                id: context?.toastId
             });
         },
         onError: (error, _, context) => {
             toast.error(error.message || 'Bulk delete operation failed', {
-                id: context?.toastId,
-                duration: 3000
+                id: context?.toastId
             })
         }
     });

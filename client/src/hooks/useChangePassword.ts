@@ -20,8 +20,7 @@ export const useChangePassword = () => {
 
         onSuccess: (response, _, context) => {
             toast.success(response.message || 'Password changed successfully!', {
-                id: context?.toastId,
-                duration: 3000
+                id: context?.toastId
             });
         },
 
@@ -29,8 +28,7 @@ export const useChangePassword = () => {
             const serverErrorMessage = error?.response?.data?.message || 'Verification failure. Verify old password.';
 
             toast.error(serverErrorMessage, {
-                id: context?.toastId,
-                duration: 3000
+                id: context?.toastId
             })
         }
     });
