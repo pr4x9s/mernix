@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { createColumnHelper, getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable, type SortingState } from '@tanstack/react-table'
+import { useState } from 'react'
+import { columnFilteringFeature, columnVisibilityFeature, createColumnHelper, createFilteredRowModel, createSortedRowModel, filterFn_includesString, globalFilteringFeature, rowPaginationFeature, rowSelectionFeature, rowSortingFeature, tableFeatures, useTable, type PaginationState, type RowSelectionState, type SortingState } from '@tanstack/react-table'
 import type { VideoFeedItem } from '../../../types/types.ts'
 import { Trash2, Edit, Eye, EyeOff, Search, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react'
 import { format, formatDistanceToNow } from 'date-fns'
@@ -18,12 +18,33 @@ interface TableProps {
     onPageChange: (page: number) => void;
 }
 
-const columnHelper = createColumnHelper<VideoFeedItem>();
+const features = tableFeatures({
+    columnFilteringFeature: columnFilteringFeature,
+    globalFilteringFeature: globalFilteringFeature,
+    rowSortingFeature: rowSortingFeature,
+    rowSelectionFeature: rowSelectionFeature,
+    rowPaginationFeature: rowPaginationFeature,
+    columnVisibilityFeature: columnVisibilityFeature,
+    filteredRowModel: createFilteredRowModel(),
+    sortedRowModel: createSortedRowModel(),
+});
+
+const columnHelper = createColumnHelper<typeof features, VideoFeedItem>();
 
 
-const StudioVideosTable = ({ data, onTogglePublish, onDeleteVideo, onBulkDelete, onBulkTogglePublish, onEditVideo, currentPage, totalPages, onPageChange }: TableProps) => {
+const StudioVideosTable = ({
+    data,
+    onTogglePublish,
+    onDeleteVideo,
+    onBulkDelete,
+    onBulkTogglePublish,
+    onEditVideo,
+    currentPage,
+    totalPages,
+    onPageChange
+}: TableProps) => {
     
-    const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
+    const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
     const [globalFilter, setGlobalFilter] = useState<string>('');
     const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -44,7 +65,7 @@ const StudioVideosTable = ({ data, onTogglePublish, onDeleteVideo, onBulkDelete,
 
     const closeModal = () => setModalConfig((prev) => ({ ...prev, isOpen: false }));
 
-    const columns = useMemo(() => [
+    const columns = columnHelper.columns([
         // 1. Checkbox Column
         columnHelper.display({
             id: 'select',
@@ -127,14 +148,14 @@ const StudioVideosTable = ({ data, onTogglePublish, onDeleteVideo, onBulkDelete,
                     >
                         {isPublished ? (
                             <>
-                                <Eye className='w-4 h-4 text-emerald-500 shrink-0' />
+                                <Eye className='size-4 text-emerald-500 shrink-0' />
                                 <span className='text-xs font-semibold text-emerald-600 dark:text-emerald-500 font-sans bg-emerald-500/10 px-2 py-0.5 rounded-full'>
                                     Public
                                 </span>
                             </>
                         ) : (
                             <>
-                                <EyeOff className='w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0' />
+                                <EyeOff className='size-4 text-zinc-400 dark:text-zinc-500 shrink-0' />
                                 <span className='text-xs font-semibold text-zinc-500 dark:text-zinc-400 font-sans bg-zinc-100 dark:bg-zinc-800/60 px-2 py-0.5 rounded-full'>
                                     Unlisted
                                 </span>
@@ -257,10 +278,10 @@ const StudioVideosTable = ({ data, onTogglePublish, onDeleteVideo, onBulkDelete,
                 </div>
             ),
         }),
-    ], [onTogglePublish, onDeleteVideo, onEditVideo]);
-
-    // eslint-disable-next-line react-hooks/incompatible-library
-    const table = useReactTable({
+    ]);
+    
+    const table = useTable({
+        features,
         data,
         columns,
         state: { 
@@ -275,34 +296,33 @@ const StudioVideosTable = ({ data, onTogglePublish, onDeleteVideo, onBulkDelete,
         manualPagination: true,
         pageCount: totalPages,
         enableRowSelection: true,
+        globalFilterFn: filterFn_includesString,
         onRowSelectionChange: setRowSelection,
         onGlobalFilterChange: setGlobalFilter,
         onSortingChange: setSorting,
-        getCoreRowModel: getCoreRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        onPaginationChange: (updater) => {
-            if (typeof updater === 'function') {
-                const currentPagination = {
-                    pageIndex: currentPage - 1,
-                    pageSize: 10
-                };
-                
-                const nextPagination = updater(currentPagination);
-                onPageChange(nextPagination.pageIndex + 1)
-            }
+        // getCoreRowModel: getCoreRowModel(),
+        // getFilteredRowModel: getFilteredRowModel(),
+        // getSortedRowModel: getSortedRowModel(),
+        onPaginationChange: (
+            updater: PaginationState | ((old: PaginationState) => PaginationState)
+        ) => {
+            const currentPagination: PaginationState = {
+                pageIndex: currentPage - 1,
+                pageSize: 10
+            };
+            
+            const nextPagination = typeof updater === 'function' ? updater(currentPagination) : updater;
+            onPageChange(nextPagination.pageIndex + 1);
+            
         },
         getRowId: (row) => row._id,
     });
 
-    const selectedRowIds = useMemo(() => {
-        return Object.keys(rowSelection).filter((id) => rowSelection[id]);
-    }, [rowSelection]);
+    const selectedRowIds = Object.keys(rowSelection).filter((id) => rowSelection[id]);
 
-    const bulkActionOverlay = useMemo(() => {
-        if (selectedRowIds.length === 0) return null;
-
-        return (
+    const bulkActionOverlay = selectedRowIds.length === 0
+        ? null 
+        : (
             <div className='sticky top-0 left-0 right-0 sm:h-13 bg-blue-600 dark:bg-blue-700/95 backdrop-blur-md z-20 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 p-3 sm:py-0 sm:px-4 animate-in slide-in-from-top duration-200 text-white border-b border-blue-500/20 shadow-md'>
                 <div className='flex items-center text-center sm:text-left'>
                     <span className='text-xs font-bold font-sans tracking-wide bg-white/10 sm:bg-transparent px-2.5 py-1 rounded-full sm:p-0'>
@@ -348,15 +368,14 @@ const StudioVideosTable = ({ data, onTogglePublish, onDeleteVideo, onBulkDelete,
                     </button>
                 </div>
             </div>
-        )
-    }, [selectedRowIds, onBulkTogglePublish, onBulkDelete]);
+        );
 
     return (
         <div className='w-full flex flex-col gap-4 relative'>
             
             {/* Top Toolbar */}
             <div className='w-full max-w-sm relative'>
-                <Search className='w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2' />
+                <Search className='size-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2' />
                 <input
                     type='text'
                     value={globalFilter ?? ''}

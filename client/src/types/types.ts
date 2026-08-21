@@ -122,18 +122,7 @@ export interface ChannelStatsResponse {
     totalLikes: number;
 }
 
-export interface ChannelVideosPaginatedResponse {
-    videos: VideoFeedItem[];
-    totalVideos: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-    hasNextPage: boolean;
-    hasPrevPage: boolean;
-    nextPage: number | null;
-    prevPage: number | null;
-    message?: string;
-}
+export type ChannelVideosPaginatedResponse = PaginatedResponse<VideoFeedItem>;
 
 // ========= Utility based types =========
 

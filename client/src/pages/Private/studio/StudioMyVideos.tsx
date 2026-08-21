@@ -39,7 +39,7 @@ const StudioVideosTab = () => {
         );
     }
 
-    const videoData = data?.videos || [];
+    const videoData = data?.docs || [];
     const totalPages = data?.totalPages || 1;
 
     if (videoData.length === 0) {
