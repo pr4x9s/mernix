@@ -27,7 +27,8 @@ const LoginModal = () => {
 			<div className='relative w-full max-w-sm bg-white dark:bg-zinc-900 rounded-4xl shadow-2xl overflow-hidden p-8 text-center border border-zinc-200 dark:border-zinc-800'>
 				<button
 					onClick={() => setLoginModalOpen(false)}
-					className='absolute right-5 top-5 p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors cursor-pointer group'
+					className='absolute right-5 top-5 p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors disabled:opacity-50 rounded-full cursor-pointer group'
+					title='Close'
 				>
 					<X size={20} className='group-hover:rotate-90 transition ease-in duration-300' />
 				</button>
