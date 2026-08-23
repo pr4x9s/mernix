@@ -5,26 +5,26 @@ import z from 'zod'
 const AVATAR_MAX = 200 * 1024;
 const COVER_MAX = 200 * 1024;
 
-const ALLOWED_IMAGE_MIMES = [
+export const ALLOWED_IMAGE_MIMES = [
 	'image/jpeg',
 	'image/jpg',
 	'image/png',
 	'image/webp',
 ] as const;
 
-type ImageMime = (typeof ALLOWED_IMAGE_MIMES)[number];
+export type ImageMime = (typeof ALLOWED_IMAGE_MIMES)[number];
 
-const ALLOWED_IMAGE_EXTENSIONS = [
+export const ALLOWED_IMAGE_EXTENSIONS = [
     'jpg',
     'jpeg',
     'png',
     'webp'
 ] as const;
 
-type ImageExtensions = (typeof ALLOWED_IMAGE_EXTENSIONS)[number];
+export type ImageExtensions = (typeof ALLOWED_IMAGE_EXTENSIONS)[number];
 
 
-const createBrowserImageSchema = (fieldName: string, maxSizeBytes: number, isOptional = false) => {
+const createBrowserImageSchema = (fieldName: 'avatar' | 'coverImage', maxSizeBytes: number, isOptional = false) => {
 	return z.custom<File | undefined>().superRefine(
 		(file, ctx) => {
 			if (isOptional && !file) return;
