@@ -1,4 +1,4 @@
-import { X, AlertTriangle } from 'lucide-react'
+import { X, AlertTriangle, Loader2 } from 'lucide-react'
 import { useEffect } from 'react'
 import type { ConfirmationModalProps } from '../../types/types.ts'
 import { Button } from './index.ts'
@@ -43,6 +43,7 @@ const ConfirmationModal = ({
 			{/* modal card */}
 			<div className='bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 w-full max-w-md rounded-2xl shadow-2xl p-6 relative z-10 transform scale-100 transition-transform duration-200'>
 				<button
+					type='button'
 					disabled={isPending}
 					onClick={onClose}
 					className='absolute top-2 right-2 p-1.5 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-all disabled:opacity-50 cursor-pointer active:scale-[0.90] group'
@@ -86,7 +87,14 @@ const ConfirmationModal = ({
                         title={isPending ? 'Processing...' : confirmText}
 						fullWidth={false}
 					>
-						{isPending ? 'Processing...' : confirmText}
+						{isPending ?
+							(
+								<>
+									<Loader2 className='animate-spin' size={18} />
+									<span>Processing...</span>
+								</>
+							) : confirmText
+						}
 					</Button>
 				</div>
 			</div>

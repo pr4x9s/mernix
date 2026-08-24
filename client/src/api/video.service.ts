@@ -1,4 +1,5 @@
-import type { AuthResponse, GetVideosQueryParams, PaginatedResponse, PublishVideoPayload, TogglePublishStatusResponse, UpdateVideoPayload, Video, VideoDetailsResponse, VideoFeedItem, VideoIdStr } from '../types/types.ts'
+import type { AuthResponse, GetVideosQueryParams, PaginatedResponse, TogglePublishStatusResponse, Video, VideoDetailsResponse, VideoFeedItem, VideoIdStr } from '../types/types.ts'
+import type { PublishVideoFormData, UpdateVideoFormData } from '../validators/video.validator.ts'
 import api from './api.ts'
 
 
@@ -11,7 +12,7 @@ export const videoService = {
         return response.data.data;
     },
 
-    getVideoById: async (videoId: string): Promise<AuthResponse<VideoDetailsResponse>> => {
+    getVideoById: async (videoId: VideoIdStr): Promise<AuthResponse<VideoDetailsResponse>> => {
         const response = await api.get<AuthResponse<VideoDetailsResponse>>(`/videos/get-video/${videoId}`);
 
         return response.data;
@@ -20,12 +21,12 @@ export const videoService = {
 
 
     // ====== 2. Content Creation & Management ======
-    publishVideo: async ({ title, description, videoFile, thumbnail }: PublishVideoPayload): Promise<AuthResponse<Video>> => {
+    publishVideo: async ({ title, description, videoFile, thumbnail }: PublishVideoFormData): Promise<AuthResponse<Video>> => {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
-        formData.append('videoFile', videoFile);
-        formData.append('thumbnail', thumbnail);
+        if (videoFile) formData.append('videoFile', videoFile);
+        if (thumbnail) formData.append('thumbnail', thumbnail);
 
         const response = await api.post<AuthResponse<Video>>('/videos/publish-video', formData, {
             headers: {
@@ -36,13 +37,11 @@ export const videoService = {
         return response.data;
     },
 
-    updateVideo: async (videoId: VideoIdStr, { title, description, thumbnail }: UpdateVideoPayload): Promise<AuthResponse<Video>> => {
+    updateVideo: async (videoId: VideoIdStr, { title, description, thumbnail }: UpdateVideoFormData): Promise<AuthResponse<Video>> => {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
-        if (thumbnail) {
-            formData.append('thumbnail', thumbnail);
-        }
+        if (thumbnail) formData.append('thumbnail', thumbnail);
 
         const response = await api.patch<AuthResponse<Video>>(`/videos/update-video/${videoId}`, formData, {
             headers: {
