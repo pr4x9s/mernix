@@ -126,10 +126,3 @@ export const updateVideoPayloadSchema = baseVideoPayloadSchema.extend({
 });
 
 export type UpdateVideoFormData = z.infer<typeof updateVideoPayloadSchema>;
-
-
-export const singleThumbnailUpdateSchema = z.object({
-    thumbnail: createBrowserThumbnailSchema(false)
-});
-
-export type SingleThumbnailFormData = z.infer<typeof singleThumbnailUpdateSchema>;
