@@ -1,13 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { ApiErrorResponse, AuthResponse, PublishVideoPayload, ToastId, TogglePublishStatusResponse, UpdateVideoPayload, Video, VideoIdStr } from '../types/types.ts'
+import type { ApiErrorResponse, AuthResponse, ToastId, TogglePublishStatusResponse, Video, VideoIdStr } from '../types/types.ts'
 import { videoService } from '../api/video.service.ts'
 import type { AxiosError } from 'axios'
 import { toast } from 'sonner'
+import type { PublishVideoFormData, UpdateVideoFormData } from '../validators/video.validator.ts'
 
 export const usePublishVideo = () => {
     const queryClient = useQueryClient();
 
-    return useMutation<AuthResponse<Video>, AxiosError<ApiErrorResponse>, PublishVideoPayload, ToastId>({
+    return useMutation<AuthResponse<Video>, AxiosError<ApiErrorResponse>, PublishVideoFormData, ToastId>({
         mutationFn: (payload) => videoService.publishVideo(payload),
 
         onMutate: () => {
@@ -31,7 +32,7 @@ export const useUpdateVideo = () => {
 
     const queryClient = useQueryClient();
 
-    return useMutation<AuthResponse<Video>, AxiosError<ApiErrorResponse>, { videoId: VideoIdStr; payload: UpdateVideoPayload }, ToastId>({
+    return useMutation<AuthResponse<Video>, AxiosError<ApiErrorResponse>, { videoId: VideoIdStr; payload: UpdateVideoFormData }, ToastId>({
         mutationFn: ({ videoId, payload }) => videoService.updateVideo(videoId, payload),
 
         onMutate: () => {
