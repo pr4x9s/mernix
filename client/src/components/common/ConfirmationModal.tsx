@@ -49,7 +49,7 @@ const ConfirmationModal = ({
 					className='absolute top-2 right-2 p-1.5 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-all disabled:opacity-50 cursor-pointer active:scale-[0.90] group'
                     title='Close'
 				>
-					<X size={18} className='group-hover:rotate-90 transition ease-in duration-300' />
+					<X size={18} className='group-hover:rotate-90 origin-center transition ease-in duration-300' />
 				</button>
 
 				{/* header */}
