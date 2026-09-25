@@ -1,23 +1,23 @@
 import clsx from 'clsx'
-import { useId, type InputHTMLAttributes, type ReactNode, type Ref } from 'react'
+import { useId, type ReactNode, type Ref, type TextareaHTMLAttributes } from 'react'
 
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-    label?: string;
-	textLength?: number;
-    leftIcon?: ReactNode;
-    rightElement?: ReactNode;
-    error?: string;
-    containerClassName?: string;
-    isOptionalField?: boolean;
-    ref?: Ref<HTMLInputElement>;
+interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+	label?: string
+	textLength?: number
+	leftIcon?: ReactNode
+	rightElement?: ReactNode
+	error?: string
+	containerClassName?: string
+	isOptionalField?: boolean
+	ref?: Ref<HTMLTextAreaElement>
 }
 
-
-const Input = ({
+const Textarea = ({
 	label,
 	textLength,
 	maxLength,
+	rows,
 	leftIcon,
 	rightElement,
 	error,
@@ -27,12 +27,12 @@ const Input = ({
 	id,
 	ref,
 	...props
-}: InputProps) => {
+}: TextareaProps) => {
 
 	const generatedId = useId();
 	const inputId = id ?? generatedId;
 
-	const iconPosition = 'absolute top-1/2 -translate-y-1/2 flex items-center justify-center';
+	const iconPosition = 'absolute top-1/5 -translate-y-1/2 flex items-center justify-center';
 
 	return (
 		<div className={clsx('w-full', containerClassName)}>
@@ -42,7 +42,10 @@ const Input = ({
 						htmlFor={inputId}
 						className='block text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1.5 ml-1'
 					>
-						{label}{' '}{isOptionalField ? null : (<span className='text-red-500'>*</span>)}
+						{label}{' '}
+						{isOptionalField ? null : (
+							<span className='text-red-500'>*</span>
+						)}
 					</label>
 				)}
 
@@ -55,22 +58,28 @@ const Input = ({
 
 			<div className='relative w-full'>
 				{leftIcon && (
-					<span className={clsx(iconPosition, 'left-3 text-zinc-400 dark:text-zinc-600')}>
+					<span
+						className={clsx(
+							iconPosition,
+							'left-3 text-zinc-400 dark:text-zinc-600',
+						)}
+					>
 						{leftIcon}
 					</span>
 				)}
 
-				<input
+				<textarea
 					id={inputId}
 					ref={ref}
+					rows={rows}
 					maxLength={maxLength}
 					className={clsx(
-						`w-full py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border outline-none focus:ring-2 transition-all shadow-sm text-sm`,
+						`w-full py-3 rounded-xl text-sm border bg-zinc-50 dark:bg-zinc-950 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-hidden focus:ring-2 transition-colors resize-none`,
 						leftIcon ? 'pl-9 pr-4' : 'px-4',
 						rightElement ? 'pr-11' : 'pr-4',
 						error
 							? 'border-red-500/50 focus:ring-red-500 hover:border-red-500 dark:bg-red-950/10'
-							: 'border-zinc-200 dark:border-zinc-800 focus:ring-blue-500 hover:border-blue-400',
+							: 'border-slate-200 dark:border-slate-800 focus:ring-blue-500 hover:border-blue-400',
 						className,
 					)}
 					title={label}
@@ -94,4 +103,4 @@ const Input = ({
 	)
 }
 
-export default Input
+export default Textarea
