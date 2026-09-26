@@ -24,6 +24,13 @@ export const usePublishVideo = () => {
                 id: context?.toastId
             });
         },
+
+        onError: (error, _, context) => {
+            const serverErrorMessage = error?.response?.data?.message || 'Failed to publish video';
+            toast.error(serverErrorMessage, {
+                id: context?.toastId
+            });
+        }
     });
 };
 
