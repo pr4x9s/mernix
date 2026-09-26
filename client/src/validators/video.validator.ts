@@ -50,7 +50,7 @@ const createBrowserFileSchema = <TMime extends string, TExt extends string>(
         if (file.size > maxSizeBytes) {
             ctx.addIssue({
                 code: 'custom',
-                message: `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} size limit exceeded. Detected size limit is ${formatBytesToReadable(file.size)}. Max allowed is ${formatBytesToReadable(maxSizeBytes)}`,
+                message: `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} size limit exceeded. Detected size limit is ${formatBytesToReadable(file.size)}. Max allowed is ${formatBytesToReadable(maxSizeBytes)}.`,
             });
 
             return;
