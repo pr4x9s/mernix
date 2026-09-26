@@ -25,7 +25,7 @@ const DataTable = <TTable,>({
 	const columnsCount = tableApi.getVisibleFlatColumns().length;
 
 	return (
-		<div className='overflow-hidden rounded-2xl border border-zinc-100 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/20 backdrop-blur-sm shadow-sm'>
+		<div className='overflow-hidden rounded-2xl border border-zinc-100 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/20 backdrop-blur-sm shadow-sm scrollbar-thumb-purple-600/20 dark:scrollbar-thumb-purple-400/20'>
 			{overlayHeader}
 
 			{/* Layout Table */}
