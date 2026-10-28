@@ -1,5 +1,5 @@
 /**
- * @function `formatBytesToReadable` - Formats the bytes into MB or KB
+ * @function `formatBytesToReadable` - Formats the bytes into GB or MB or KB
  * @param `bytes`
  * @returns `string`
  */
