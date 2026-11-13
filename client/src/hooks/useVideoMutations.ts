@@ -5,13 +5,14 @@ import type { AxiosError } from 'axios'
 import { toast } from 'sonner'
 import type { PublishVideoFormData, UpdateVideoFormData } from '../validators/video.validator.ts'
 
-export const usePublishVideo = () => {
+export const usePublishVideo = (onProgress?: (progress: number) => void) => {
     const queryClient = useQueryClient();
 
     return useMutation<AuthResponse<Video>, AxiosError<ApiErrorResponse>, PublishVideoFormData, ToastId>({
-        mutationFn: (payload) => videoService.publishVideo(payload),
+        mutationFn: (payload) => videoService.publishVideo(payload, onProgress),
 
         onMutate: () => {
+            onProgress?.(0);
             return {
                 toastId: toast.loading('Uploading and processing video asset...')
             };
