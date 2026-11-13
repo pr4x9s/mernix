@@ -10,8 +10,6 @@ const VIDEO_MAX = 5 * 1024 * 1024;
 const ALLOWED_VIDEO_MIMES = [
     'video/mp4',
     'video/webm',
-    'video/x-matroska',
-    'video/quicktime'
 ] as const;
 
 type VideoMime = (typeof ALLOWED_VIDEO_MIMES)[number];
@@ -19,9 +17,6 @@ type VideoMime = (typeof ALLOWED_VIDEO_MIMES)[number];
 const ALLOWED_VIDEO_EXTENSIONS = [
     'mp4',
     'webm',
-    'ogg',
-    'mov',
-    'quicktime'
 ] as const;
 
 type VideoExtensions = (typeof ALLOWED_VIDEO_EXTENSIONS)[number];
@@ -91,7 +86,7 @@ export const createBrowserVideoSchema = (isOptional = false) =>
         VIDEO_MAX,
         ALLOWED_VIDEO_MIMES,
         ALLOWED_VIDEO_EXTENSIONS,
-        'Invalid video format. Only MP4, WEBM, MKV, and MOV videos are allowed',
+        'Invalid video format. Only MP4 and WEBM videos are allowed',
         isOptional
     );
 
