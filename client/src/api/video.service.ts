@@ -21,7 +21,10 @@ export const videoService = {
 
 
     // ====== 2. Content Creation & Management ======
-    publishVideo: async ({ title, description, videoFile, thumbnail }: PublishVideoFormData): Promise<AuthResponse<Video>> => {
+    publishVideo: async (
+        { title, description, videoFile, thumbnail }: PublishVideoFormData,
+        onUploadProgress?: (progress: number) => void
+    ): Promise<AuthResponse<Video>> => {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
@@ -31,7 +34,15 @@ export const videoService = {
         const response = await api.post<AuthResponse<Video>>('/videos/publish-video', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-            }
+            },
+            onUploadProgress: (progressEvent) => {
+                if (progressEvent.total) {
+                    const percentCompleted = Math.round(
+                        (progressEvent.loaded * 100) / progressEvent.total
+                    );
+                    onUploadProgress?.(percentCompleted);
+                }
+            },
         });
 
         return response.data;
