@@ -37,9 +37,7 @@ export const videoService = {
             },
             onUploadProgress: (progressEvent) => {
                 if (progressEvent.total) {
-                    const percentCompleted = Math.round(
-                        (progressEvent.loaded * 100) / progressEvent.total
-                    );
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                     onUploadProgress?.(percentCompleted);
                 }
             },
