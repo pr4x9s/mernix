@@ -1,6 +1,5 @@
 import { useDashboardStats } from '../../../hooks/useDashboardData.ts'
-import { Commet } from 'react-loading-indicators'
-import { Eye, Users, ThumbsUp, Video, AlertCircle, BarChart3, type LucideIcon } from 'lucide-react'
+import { Eye, Users, ThumbsUp, Video, AlertCircle, BarChart3, type LucideIcon, Loader2 } from 'lucide-react'
 import { useAuthStore } from '../../../store/authStore.ts'
 import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
@@ -25,8 +24,9 @@ const StudioAnalytics = () => {
 
     if (isLoading) {
         return (
-            <div className='flex items-center justify-center min-h-[40vh] w-full'>
-                <Commet color={['#6004a7', '#7d05d9', '#9717fa', '#ad49fb']} />
+            <div className='flex flex-col items-center justify-center min-h-100 gap-2'>
+                <Loader2 className='w-6 h-6 animate-spin text-zinc-500' />
+                <span className='text-xs font-mono text-zinc-400 font-medium'>Syncing content...</span>
             </div>
         );
     }

@@ -36,7 +36,7 @@ const StudioVideosTab = () => {
         return (
             <div className='flex flex-col items-center justify-center min-h-100 gap-2'>
                 <Loader2 className='w-6 h-6 animate-spin text-zinc-500' />
-                <span className='text-xs font-mono text-zinc-400 font-medium'>Syncing content matrix...</span>
+                <span className='text-xs font-mono text-zinc-400 font-medium'>Syncing content...</span>
             </div>
         );
     }
