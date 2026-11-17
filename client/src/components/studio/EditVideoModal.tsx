@@ -7,6 +7,8 @@ import { useUpdateVideo } from '../../hooks/useVideoMutations.ts'
 import { updateVideoPayloadSchema, type UpdateVideoFormData } from '../../validators/video.validator.ts'
 import { Button, Input, Textarea } from '../../components/common/index.ts'
 
+
+
 interface EditVideoModalProps {
 	isOpen: boolean
 	onClose: () => void
@@ -20,10 +22,8 @@ const EditVideoModal = ({
 	cancelText = 'Cancel',
 	video,
 }: EditVideoModalProps) => {
-	const { mutate: updateVideo, isPending: isUpdatingVideo } = useUpdateVideo()
-	const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(
-		null,
-	)
+	const { mutate: updateVideo, isPending: isUpdatingVideo } = useUpdateVideo();
+	const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
 
 	const {
 		register,
@@ -39,34 +39,36 @@ const EditVideoModal = ({
 			title: video?.title || '',
 			description: video?.description || '',
 		},
-	})
+	});
 
-	const descriptionValue = watch('description') || ''
+	const descriptionValue = watch('description') || '';
 
 	useEffect(() => {
 		if (video) {
 			reset({
 				title: video.title || '',
 				description: video.description || '',
-			})
-			setThumbnailPreview(video.thumbnail || null)
+			});
+			setThumbnailPreview(video.thumbnail || null);
 		}
-	}, [video, reset])
+	}, [video, reset]);
 
 	const handleThumbnailChange = (e: ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0]
+		const file = e.target.files?.[0];
 
 		if (file) {
 			setValue('thumbnail', file, {
 				shouldValidate: true,
 				shouldDirty: true,
-			})
-			setThumbnailPreview(URL.createObjectURL(file))
+			});
+
+			if (thumbnailPreview) URL.revokeObjectURL(thumbnailPreview);
+			setThumbnailPreview(URL.createObjectURL(file));
 		}
-	}
+	};
 
 	const onSubmit: SubmitHandler<UpdateVideoFormData> = (data) => {
-		if (!video?._id) return
+		if (!video?._id) return;
 
 		updateVideo(
 			{
@@ -78,10 +80,10 @@ const EditVideoModal = ({
 					onClose()
 				},
 			},
-		)
+		);
 	}
 
-	if (!isOpen || !video) return null
+	if (!isOpen || !video) return null;
 
 	return (
 		<div className='fixed inset-0 z-50 flex items-center justify-center p-4'>
@@ -189,7 +191,7 @@ const EditVideoModal = ({
 									<input
 										id='video-thumbnail-upload'
 										type='file'
-										accept='image/*'
+										accept='image/jpeg,image/png,image/webp'
 										className='hidden'
 										onChange={handleThumbnailChange}
 										disabled={isUpdatingVideo}
