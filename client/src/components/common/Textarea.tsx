@@ -74,12 +74,12 @@ const Textarea = ({
 					rows={rows}
 					maxLength={maxLength}
 					className={clsx(
-						`w-full py-3 rounded-xl text-sm border bg-zinc-50 dark:bg-zinc-950 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-hidden focus:ring-2 transition-colors resize-none`,
+						`w-full py-3 rounded-xl shadow-sm text-sm border bg-zinc-50 dark:bg-zinc-950 text-slate-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-hidden focus:ring-2 transition-colors resize-none`,
 						leftIcon ? 'pl-9 pr-4' : 'px-4',
 						rightElement ? 'pr-11' : 'pr-4',
 						error
 							? 'border-red-500/50 focus:ring-red-500 hover:border-red-500 dark:bg-red-950/10'
-							: 'border-slate-200 dark:border-slate-800 focus:ring-blue-500 hover:border-blue-400',
+							: 'border-zinc-200 dark:border-zinc-800 focus:ring-blue-500 hover:border-blue-400',
 						className,
 					)}
 					title={label}

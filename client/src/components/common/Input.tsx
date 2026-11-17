@@ -65,7 +65,7 @@ const Input = ({
 					ref={ref}
 					maxLength={maxLength}
 					className={clsx(
-						`w-full py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border outline-none focus:ring-2 transition-all shadow-sm text-sm`,
+						`w-full py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 text-slate-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 border outline-none focus:ring-2 transition-all shadow-sm text-sm`,
 						leftIcon ? 'pl-9 pr-4' : 'px-4',
 						rightElement ? 'pr-11' : 'pr-4',
 						error
