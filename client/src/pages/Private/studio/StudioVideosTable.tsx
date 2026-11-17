@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { columnFilteringFeature, columnVisibilityFeature, createColumnHelper, createFilteredRowModel, createSortedRowModel, filterFn_includesString, globalFilteringFeature, rowPaginationFeature, rowSelectionFeature, rowSortingFeature, tableFeatures, useTable, type PaginationState, type RowSelectionState, type SortingState } from '@tanstack/react-table'
 import type { VideoFeedItem } from '../../../types/types.ts'
 import { Trash2, Edit, Eye, EyeOff, Search, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react'
 import { format, formatDistanceToNow } from 'date-fns'
-import { ConfirmationModal, DataTable } from '../../../components/common/index.ts'
+import { ConfirmationModal, DataTable, Input } from '../../../components/common/index.ts'
 
 
 interface TableProps {
@@ -12,7 +12,7 @@ interface TableProps {
     onDeleteVideo: (id: string) => void;
     onBulkDelete: (ids: string[]) => void;
     onBulkTogglePublish: (ids: string[]) => void;
-    onEditVideo: (video: VideoFeedItem) => void; // TODO
+    onEditVideo: (video: VideoFeedItem) => void;
     currentPage: number;
     totalPages: number;
     onPageChange: (page: number) => void;
@@ -46,7 +46,18 @@ const StudioVideosTable = ({
     
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
     const [globalFilter, setGlobalFilter] = useState<string>('');
+    const [debouncedFilter, setDebouncedFilter] = useState<string>('');
     const [sorting, setSorting] = useState<SortingState>([]);
+
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedFilter(globalFilter);
+        }, 300);
+
+        return () => clearTimeout(handler);
+    }, [globalFilter]);
 
     // Unified Modal State Management
     const [modalConfig, setModalConfig] = useState<{
@@ -286,7 +297,7 @@ const StudioVideosTable = ({
         columns,
         state: { 
             rowSelection,
-            globalFilter,
+            globalFilter: debouncedFilter,
             sorting,
             pagination: {
                 pageIndex: currentPage - 1,
@@ -374,14 +385,20 @@ const StudioVideosTable = ({
         <div className='w-full flex flex-col gap-4 relative'>
             
             {/* Top Toolbar */}
-            <div className='w-full max-w-sm relative'>
-                <Search className='size-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2' />
-                <input
+            <div className='relative max-w-xs w-full'>
+                <Input
                     type='text'
                     value={globalFilter ?? ''}
                     onChange={(e) => setGlobalFilter(e.target.value)}
                     placeholder='Filter videos by title...'
-                    className='w-full pl-9 pr-4 py-2 text-xs font-sans border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-hidden focus:border-purple-500 transition-colors shadow-2xs'
+                    ref={inputRef}
+                    title='Filter videos by title...'
+                    leftIcon={
+                        <Search 
+                            className='size-4 cursor-pointer'
+                            onClick={() => inputRef.current ? inputRef.current.focus() : null}
+                        />
+                    }
                 />
             </div>
 

@@ -1,16 +1,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { ApiErrorResponse, AuthResponse, PublishVideoPayload, ToastId, TogglePublishStatusResponse, UpdateVideoPayload, Video, VideoIdStr } from '../types/types.ts'
+import type { ApiErrorResponse, AuthResponse, ToastId, TogglePublishStatusResponse, Video, VideoIdStr } from '../types/types.ts'
 import { videoService } from '../api/video.service.ts'
 import type { AxiosError } from 'axios'
 import { toast } from 'sonner'
+import type { PublishVideoFormData, UpdateVideoFormData } from '../validators/video.validator.ts'
 
-export const usePublishVideo = () => {
+export const usePublishVideo = (onProgress?: (progress: number) => void) => {
     const queryClient = useQueryClient();
 
-    return useMutation<AuthResponse<Video>, AxiosError<ApiErrorResponse>, PublishVideoPayload, ToastId>({
-        mutationFn: (payload) => videoService.publishVideo(payload),
+    return useMutation<AuthResponse<Video>, AxiosError<ApiErrorResponse>, PublishVideoFormData, ToastId>({
+        mutationFn: (payload) => videoService.publishVideo(payload, onProgress),
 
         onMutate: () => {
+            onProgress?.(0);
             return {
                 toastId: toast.loading('Uploading and processing video asset...')
             };
@@ -23,6 +25,13 @@ export const usePublishVideo = () => {
                 id: context?.toastId
             });
         },
+
+        onError: (error, _, context) => {
+            const serverErrorMessage = error?.response?.data?.message || 'Failed to publish video';
+            toast.error(serverErrorMessage, {
+                id: context?.toastId
+            });
+        }
     });
 };
 
@@ -31,7 +40,7 @@ export const useUpdateVideo = () => {
 
     const queryClient = useQueryClient();
 
-    return useMutation<AuthResponse<Video>, AxiosError<ApiErrorResponse>, { videoId: VideoIdStr; payload: UpdateVideoPayload }, ToastId>({
+    return useMutation<AuthResponse<Video>, AxiosError<ApiErrorResponse>, { videoId: VideoIdStr; payload: UpdateVideoFormData }, ToastId>({
         mutationFn: ({ videoId, payload }) => videoService.updateVideo(videoId, payload),
 
         onMutate: () => {
