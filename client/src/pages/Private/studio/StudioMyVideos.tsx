@@ -4,6 +4,8 @@ import { useBulkActionsVideoMutations } from '../../../hooks/useBulkActionsVideo
 import { useTogglePublish, useDeleteVideo } from '../../../hooks/useVideoMutations.ts'
 import StudioVideosTable from './StudioVideosTable.tsx'
 import { AlertCircle, Loader2, VideoOff } from 'lucide-react'
+import type { VideoFeedItem } from '../../../types/types.ts'
+import { EditVideoModal } from '../../../components/common/index.ts'
 
 
 
@@ -12,20 +14,29 @@ const StudioVideosTab = () => {
     const [page, setPage] = useState(1);
     const limit = 10;
 
+    const [selectedVideoToEdit, setSelectedVideoToEdit] = useState<VideoFeedItem | null>(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
     const { data, isLoading, isError, error } = useDashboardVideos(page, limit);
     const { bulkDelete, bulkTogglePublish } = useBulkActionsVideoMutations();
     const { mutate: togglePublish } = useTogglePublish();
     const { mutate: deleteVideo } = useDeleteVideo();
 
-    const handleEditRedirect = () => {
-        console.log('handle edit');
+    const handleEdit = (video: VideoFeedItem) => {
+        setSelectedVideoToEdit(video);
+        setIsEditModalOpen(true);
+    };
+
+    const handleCloseEditMOdal = () => {
+        setIsEditModalOpen(false);
+        setSelectedVideoToEdit(null);
     };
 
     if (isLoading) {
         return (
             <div className='flex flex-col items-center justify-center min-h-100 gap-2'>
                 <Loader2 className='w-6 h-6 animate-spin text-zinc-500' />
-                <span className='text-xs font-mono text-zinc-400 font-medium'>Syncing content matrix...</span>
+                <span className='text-xs font-mono text-zinc-400 font-medium'>Syncing content...</span>
             </div>
         );
     }
@@ -55,17 +66,23 @@ const StudioVideosTab = () => {
     }
 
     return (
-        <div className='w-full animate-in fade-in duration-300'>
+        <div className='w-full duration-300'>
             <StudioVideosTable 
                 data={videoData}
                 onTogglePublish={(id) => togglePublish(id)}
                 onDeleteVideo={(id) => deleteVideo(id)}
                 onBulkDelete={(ids) => bulkDelete(ids)}
                 onBulkTogglePublish={(ids) => bulkTogglePublish(ids)}
-                onEditVideo={handleEditRedirect}
+                onEditVideo={handleEdit}
                 currentPage={page}
                 totalPages={totalPages}
                 onPageChange={setPage}
+            />
+
+            <EditVideoModal 
+                isOpen={isEditModalOpen}
+                video={selectedVideoToEdit}
+                onClose={handleCloseEditMOdal}
             />
         </div>
     )

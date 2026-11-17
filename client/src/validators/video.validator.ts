@@ -1,5 +1,6 @@
 import z from 'zod'
 import { ALLOWED_IMAGE_EXTENSIONS, ALLOWED_IMAGE_MIMES, type ImageExtensions, type ImageMime } from './auth.validator.ts'
+import { formatBytesToReadable } from '../utils/formatBytesToReadable.ts'
 
 
 
@@ -9,8 +10,6 @@ const VIDEO_MAX = 5 * 1024 * 1024;
 const ALLOWED_VIDEO_MIMES = [
     'video/mp4',
     'video/webm',
-    'video/x-matroska',
-    'video/quicktime'
 ] as const;
 
 type VideoMime = (typeof ALLOWED_VIDEO_MIMES)[number];
@@ -18,9 +17,6 @@ type VideoMime = (typeof ALLOWED_VIDEO_MIMES)[number];
 const ALLOWED_VIDEO_EXTENSIONS = [
     'mp4',
     'webm',
-    'ogg',
-    'mov',
-    'quicktime'
 ] as const;
 
 type VideoExtensions = (typeof ALLOWED_VIDEO_EXTENSIONS)[number];
@@ -47,11 +43,9 @@ const createBrowserFileSchema = <TMime extends string, TExt extends string>(
         }
 
         if (file.size > maxSizeBytes) {
-            const sizeInMB = Math.round(maxSizeBytes / (1024 * 1024));
-
             ctx.addIssue({
                 code: 'custom',
-                message: `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} size limit exceeded. Max allowed is ${sizeInMB} MB`,
+                message: `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} size limit exceeded. Detected size limit is ${formatBytesToReadable(file.size)}. Max allowed is ${formatBytesToReadable(maxSizeBytes)}.`,
             });
 
             return;
@@ -92,7 +86,7 @@ export const createBrowserVideoSchema = (isOptional = false) =>
         VIDEO_MAX,
         ALLOWED_VIDEO_MIMES,
         ALLOWED_VIDEO_EXTENSIONS,
-        'Invalid video format. Only MP4, WEBM, MKV, and MOV videos are allowed',
+        'Invalid video format. Only MP4 and WEBM videos are allowed',
         isOptional
     );
 
