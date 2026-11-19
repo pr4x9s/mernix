@@ -35,7 +35,7 @@ import {
     videoRouter,
 } from './routes/index.ts'
 import swaggerUi from 'swagger-ui-express'
-import yaml from 'js-yaml'
+import { load } from 'js-yaml'
 import fs from 'node:fs'
 import { errorHandler } from './middlewares/error.middleware.ts'
 import { limiter } from './middlewares/rateLimiter.middleware.ts';
@@ -43,7 +43,7 @@ import { limiter } from './middlewares/rateLimiter.middleware.ts';
 let swaggerDocument;
 
 try {
-    swaggerDocument = yaml.load(fs.readFileSync('./swaggerDoc.yaml', 'utf-8'));
+    swaggerDocument = load(fs.readFileSync('./swaggerDoc.yaml', 'utf-8'));
     // console.log('SwaggerDocument: ', swaggerDocument);
 }
 catch (error) {
