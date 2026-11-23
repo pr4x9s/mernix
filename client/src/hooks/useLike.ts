@@ -1,15 +1,35 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import type { ApiErrorResponse, AuthResponse, GetLikedVideosQueryParams, LikedVideosPaginatedResponse, ToastId, ToggleLikeResponse, VideoIdStr } from '../types/types.ts'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import type { ApiErrorResponse, AuthResponse, LikedVideosPaginatedResponse, ToastId, ToggleLikeResponse, VideoIdStr } from '../types/types.ts'
 import type { AxiosError } from 'axios'
 import { likeService } from '../api/like.service.ts'
 import { toast } from 'sonner'
 
 
 
-export const useLikedVideos = (params: GetLikedVideosQueryParams = { page: 1, limit: 10 }) => {
-    return useQuery<AuthResponse<LikedVideosPaginatedResponse>, AxiosError<ApiErrorResponse>>({
-        queryKey: ['likes', 'liked-videos', params],
-        queryFn: () => likeService.getLikedVideos(params),
+export const useLikedVideos = (limit = 10) => {
+    return useInfiniteQuery<LikedVideosPaginatedResponse, AxiosError<ApiErrorResponse>>({
+        queryKey: ['likes', 'liked-videos', limit],
+        
+        initialPageParam: 1,
+        
+        queryFn: async ({ pageParam = 1 }) => {
+            const res = await likeService.getLikedVideos({
+                page: pageParam as number,
+                limit,
+            });
+            return res.data;
+        },
+        
+        getNextPageParam: (lastPage) => {
+            if (lastPage.hasNextPage && lastPage.nextPage) {
+                return lastPage.nextPage;
+            }
+            return undefined;
+        },
+        
+        refetchOnWindowFocus: false,
+        
+        staleTime: 5 * 60 * 1000
     });
 };
 
