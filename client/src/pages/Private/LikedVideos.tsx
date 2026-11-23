@@ -129,7 +129,7 @@ const LikedVideos = () => {
                             </div>
     
                             {/* Text Metadata Frame */}
-                            <div className='flex flex-col justify-between grow min-w-0 py-0.5 sm:py-1 z-20'>
+                            <div className='flex flex-col justify-start grow min-w-0 py-0.5 sm:py-1 z-20'>
                                 <div className='flex items-start justify-between gap-2 sm:gap-3 min-w-0'>
                                     <div className='min-w-0 flex-1'>
                                         <h3
