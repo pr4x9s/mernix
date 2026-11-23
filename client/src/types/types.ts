@@ -124,6 +124,14 @@ export interface ChannelStatsResponse {
 
 export type ChannelVideosPaginatedResponse = PaginatedResponse<VideoFeedItem>;
 
+export interface ToggleLikeResponse {
+    isLiked: boolean;
+}
+
+export type LikedVideosPaginatedResponse = PaginatedResponse<VideoFeedItem>;
+
+export type GetLikedVideosQueryParams = GetVideosQueryParams;
+
 // ========= Utility based types =========
 
 // export type LoginData = Pick<User, 'password'> & {

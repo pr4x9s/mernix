@@ -2,3 +2,5 @@ allowBuilds:
   '@scarf/scarf': false
   bcrypt: true
   esbuild: false
+minimumReleaseAgeExclude:
+  - express-rate-limit@8.7.5

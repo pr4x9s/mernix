@@ -12,6 +12,7 @@ const CreatorDashboard = lazy(() => import('./Private/studio/CreatorDashboard.ts
 const StudioAnalytics = lazy(() => import('./Private/studio/StudioAnalytics.tsx'));
 const StudioMyVideos = lazy(() => import('./Private/studio/StudioMyVideos.tsx'));
 const StudioCreator = lazy(() => import('./Private/studio/StudioCreator.tsx'));
+const LikedVideos = lazy(() => import('./Private/LikedVideos.tsx'));
 
 
 export {
@@ -25,5 +26,6 @@ export {
     CreatorDashboard,
     StudioAnalytics,
     StudioMyVideos,
-    StudioCreator
+    StudioCreator,
+    LikedVideos,
 }
