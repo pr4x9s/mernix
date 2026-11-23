@@ -63,7 +63,8 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 				},
 				{
 					name: 'Liked Videos',
-					icon: ThumbsUp, slug: '/liked'
+                    icon: ThumbsUp,
+                    slug: '/liked-videos',
 				},
 				{
 					name: 'Playlists',
