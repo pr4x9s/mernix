@@ -1,9 +1,12 @@
 import { useChannelProfile } from '../../hooks/useChannelProfile.ts'
 import { Commet } from 'react-loading-indicators'
-import { Grid, ListVideo, User as UserIcon, Edit, UserPlus, Calendar } from 'lucide-react'
+import { Grid, ListVideo, User as UserIcon, Edit, UserPlus, Calendar, BellRing } from 'lucide-react'
 import { format, formatDistanceToNow } from 'date-fns'
-import { useNavigate, useSearchParams } from 'react-router'
+import { useSearchParams } from 'react-router'
 import type { TabItems } from '../../types/types.ts'
+import { Button, ConfirmationModal } from '../../components/common/index.ts'
+import { useToggleSubscription } from '../../hooks/useSubscription.ts'
+import { useState } from 'react'
 
 
 
@@ -11,10 +14,35 @@ const Channel = () => {
 
 	const { channel, isLoading, isError, isOwner, username, error } = useChannelProfile();
 
-	const [searchParams, setSearchParams] = useSearchParams();
+    const { mutate: toggleSubscription, isPending: isToggling } = useToggleSubscription();
 
-	const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
 
+    const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false);
+
+    const handleToggleSubscription = () => {
+        if (!channel?._id) return;
+        toggleSubscription({
+            channelId: channel._id,
+            channelUsername: channel.username
+        });
+    };
+
+    const handleConfirmUnsubscribe = () => {
+        if (!channel?._id) return;
+        toggleSubscription(
+            {
+                channelId: channel._id,
+                channelUsername: channel.username
+            },
+            {
+                onSuccess: () => {
+                    setIsUnsubscribeModalOpen(false);
+                }
+            }
+        );
+    };
+    
 	if (isLoading) {
 		return (
 			<div className='flex items-center justify-center min-h-[70vh]'>
@@ -146,26 +174,52 @@ const Channel = () => {
 					</div>
 
 					{/* action controller btn */}
-					<div className='flex justify-center md:pt-4'>
-						{isOwner ? (
-							<button
-                                className='flex items-center gap-2 bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700/80 font-semibold px-4 py-2 rounded-xl text-sm transition-all duration-200 active:scale-95 cursor-pointer'
-                                title={isOwner ? 'Customize Channel' : ''}
-								onClick={() => navigate('/settings?tab=account')}
+                    <div className='flex justify-center md:pt-4'>
+                        {isOwner ? (
+                            <Button
+                                as='link'
+                                to='/settings?tab=account'
+                                variant='secondary'
+                                size='sm'
+                                fullWidth={false}
+                                title='Customize Channel'
+                                aria-label='Customize Channel'
                             >
-								<Edit size={16} />
-								Customize Channel
-							</button>
-						) : (
-							<button
-                                className='flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold px-5 py-2 rounded-xl text-sm shadow-lg shadow-purple-600/10 transition-all duration-200 active:scale-95 cursor-pointer'
-                                title={!isOwner ? 'Subscribe' : ''}
+                                <Edit size={16} /> Customize Channel
+                            </Button>
+                        ) : (
+                            <Button
+                                as='button'
+                                type='button'
+                                variant={channel.isSubscribed ? 'secondary' : 'primary'}
+                                size='sm'
+                                disabled={isToggling || !channel._id}
+                                onClick={() => {
+                                    if (channel.isSubscribed) {
+                                        setIsUnsubscribeModalOpen(true);
+                                    }
+                                    else {
+                                        handleToggleSubscription();
+                                    }
+                                }}
+                                fullWidth={false}
+                                title={channel.isSubscribed ? 'Unsubscribe' : 'Subscribe'}
+                                aria-label={channel.isSubscribed ? 'Unsubscribe' : 'Subscribe'}
                             >
-								<UserPlus size={16} />
-								Subscribe
-							</button>
-						)}
-					</div>
+                                {channel.isSubscribed ? (
+                                    <span className='flex items-center justify-center gap-x-2'>
+                                        <BellRing size={14} />
+                                        Unsubscribe
+                                    </span>
+                                ) : (
+                                    <span className='flex items-center justify-center gap-x-2'>
+                                        <UserPlus size={16} />
+                                        Subscribe
+                                    </span>
+                                )}
+                            </Button>
+                        )}
+                    </div>
 				</div>
 
 				{/* sub-navigation filter tabs layout */}
@@ -272,7 +326,24 @@ const Channel = () => {
 						</div>
 					)}
 				</div>
-			</section>
+            </section>
+
+            <ConfirmationModal
+                isOpen={isUnsubscribeModalOpen}
+				onClose={() => setIsUnsubscribeModalOpen(false)}
+				onConfirm={handleConfirmUnsubscribe}
+				isPending={isToggling}
+				title='Confirm Unsubscribe?'
+                description={
+                    <>
+                        Are you sure you want to unsubscribe from{' '}
+                        <span className='font-semibold'>
+                            {channel.firstName} {channel.lastName}
+                        </span>
+                    </>
+				}
+				confirmText='Unsubscribe'
+            />
 		</>
 	)
 }
