@@ -3,6 +3,7 @@ import type { Application } from 'express'
 import cors from 'cors';
 import conf from './conf/conf.ts';
 import cookieParser from 'cookie-parser';
+import morgan from 'morgan'
 
 const app: Application = express();
 
@@ -10,6 +11,8 @@ app.use(cors({
     origin: conf.corsOrigin,
     credentials: true
 }));
+
+app.use(morgan('dev'));
 
 app.set('trust proxy', 1);
 
