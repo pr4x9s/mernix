@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
+import type { ReactNode } from 'react';
 
 export interface Config {
     baseUrl: string;
@@ -43,7 +44,7 @@ export interface ConfirmationModalProps {
 	onClose: () => void;
 	onConfirm: () => void;
 	title: string;
-	description: string;
+	description: ReactNode;
 	confirmText?: string;
 	cancelText?: string;
 	isPending?: boolean;
@@ -192,7 +193,10 @@ export interface VideoDetailsResponse extends Omit<Video, 'owner'> {
     isLiked: boolean;
 }
 
-export type SubscribedChannel = Pick<User, 'firstName' | 'lastName' | 'username' | 'avatar'>;
+export type SubscribedChannel = Pick<User, 'firstName' | 'lastName' | 'username' | 'avatar'> & {
+    _id: string;
+    totalVideos: number;
+};
 
 export type ChannelSubscriberUser = Pick<User, 'firstName' | 'lastName' | 'username' | 'avatar'> & {
     _id: string;
