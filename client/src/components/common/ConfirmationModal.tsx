@@ -69,21 +69,27 @@ const ConfirmationModal = ({
 
 				{/* footer action btns container */}
 				<div className='flex justify-end gap-3 mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800'>
-					<Button
+                    <Button
+                        as='button'
+                        variant='secondary'
+                        size='sm'
 						type='button'
 						disabled={isPending}
 						onClick={onClose}
-						className='bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800/60 text-zinc-900 dark:text-white shadow-none'
+						className=''
                         title={cancelText}
 						fullWidth={false}
 					>
 						{cancelText}
 					</Button>
-					<Button
+                    <Button
+                        as='button'
+                        variant='primary'
+                        size='sm'
 						type='button'
 						disabled={isPending}
 						onClick={onConfirm}
-						className='text-white bg-red-600 hover:bg-red-700 shadow-lg shadow-red-600/10 cursor-pointer'
+						className='bg-red-600 hover:bg-red-700 shadow-red-600/10! cursor-pointer'
                         title={isPending ? 'Processing...' : confirmText}
 						fullWidth={false}
 					>
