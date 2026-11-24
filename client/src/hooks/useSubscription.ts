@@ -78,7 +78,7 @@ export const useToggleSubscription = () => {
             queryClient.invalidateQueries({ queryKey: ['subscriptions', 'subscribed-channels'] });
             queryClient.invalidateQueries({ queryKey: ['subscriptions', 'channel-subscribers'] });
             if (channelUsername) {
-                queryClient.invalidateQueries({ queryKey: ['channel', channelUsername] });
+                queryClient.invalidateQueries({ queryKey: ['channelProfile', channelUsername] });
             }
             toast.success(response.message || 'Subscription updated', {
                 id: context?.toastId,
