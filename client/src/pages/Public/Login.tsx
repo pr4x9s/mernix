@@ -88,11 +88,16 @@ const Login = () => {
 							{...register('password')}
 						/>
 
-						<Button 
-							type='submit'
+                        <Button 
+                            as='button'
+                            type='submit'
+                            variant='primary'
+							fullWidth={true}
 							disabled={isPending}
 							title={isPending ? 'Authenticating...' : 'Sign In'}
-							className={`mt-8 mb-5 ${isPending ? 'active:scale-none' : ''}`}
+                            className={`my-4 ${isPending ? 'active:scale-none' : ''}`}
+							aria-label={isPending ? 'Authenticating...' : 'Sign In'}
+                            role='button'
 						>
 							{isPending ? (
 								<>
@@ -110,7 +115,10 @@ const Login = () => {
 							Don't have an account?{' '}
 							<Link
 								to='/register'
-								className='text-purple-600 hover:underline font-semibold'
+                                className='text-purple-600 hover:underline font-semibold'
+                                title='Create Account'
+                                aria-label='Create Account'
+								role='link'
 							>
 								Create Account
 							</Link>
