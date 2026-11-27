@@ -40,7 +40,7 @@ const WatchHistory = () => {
 									<div className='h-4 w-1/4 bg-zinc-200 dark:bg-zinc-800 rounded' />
 								</div>
 								<div className='flex items-center gap-2'>
-									<div className='h-6 w-6 rounded-full bg-zinc-200 dark:bg-zinc-800' />
+									<div className='size-6 rounded-full bg-zinc-200 dark:bg-zinc-800' />
 									<div className='h-4 w-24 bg-zinc-200 dark:bg-zinc-800 rounded' />
 								</div>
 							</div>
@@ -80,19 +80,19 @@ const WatchHistory = () => {
 		<>
 			<title>Watch History | Mernix</title>
 
-			<section className='w-full max-w-6xl mx-auto px-4 py-6 md:py-10'>
-				<div className='flex items-center gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-5 mb-8'>
-					<h1 className='text-2xl md:text-3xl font-bold text-zinc-900 dark:text-zinc-50'>
+			<section className='w-full max-w-6xl mx-auto px-3 sm:px-4 py-6 md:py-10 overflow-x-clip'>
+				<div className='flex items-center justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-4 sm:pb-5 mb-6 sm:mb-8'>
+					<h1 className='text-xl sm:text-2xl md:text-3xl font-bold text-zinc-900 dark:text-zinc-50'>
 						Watch History
 					</h1>
 				</div>
 
 				{/* Video Feed Layout List */}
-				<div className='flex flex-col gap-6'>
+				<div className='flex flex-col gap-4 sm:gap-6'>
 					{allVideos.map((video: WatchHistoryVideoItem, index) => (
 						<div
 							key={`${video._id}-${index}`}
-							className='relative flex flex-col sm:flex-row gap-4 bg-white dark:bg-zinc-900/40 p-3 rounded-2xl border border-zinc-200/50 dark:border-zinc-800/60 hover:shadow-md hover:border-purple-500/30 dark:hover:border-purple-500/20 transition-all duration-200 group'
+							className='relative flex flex-col sm:flex-row gap-3.5 sm:gap-4 bg-white dark:bg-zinc-900/40 p-3 rounded-2xl border border-zinc-200/50 dark:border-zinc-800/60 hover:shadow-md hover:border-purple-500/30 dark:hover:border-purple-500/20 transition-all duration-200 group'
 						>
 							<Link 
 								to={`/watch/${video._id}`} 
@@ -100,11 +100,11 @@ const WatchHistory = () => {
 							/>
 
 							{/* Thumbnail Module Layout */}
-							<div className='relative aspect-video sm:w-64 md:w-72 shrink-0 overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-800 shadow-xs'>
+							<div className='relative aspect-video w-full sm:w-64 md:w-72 shrink-0 overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-800 shadow-xs'>
 								<img
 									src={video.thumbnail}
 									alt={video.title}
-									className='h-full w-full object-cover group-hover:scale-102 transition-transform duration-300'
+									className='size-full object-cover group-hover:scale-102 transition-transform duration-300'
 									loading='lazy'
 								/>
 								<span className='absolute bottom-2 right-2 flex items-center gap-1 rounded bg-black/75 px-2 py-0.5 text-xs font-medium text-white tracking-wide'>
@@ -119,37 +119,43 @@ const WatchHistory = () => {
 							</div>
 
 							{/* Text Metadata Frame */}
-							<div className='flex flex-col justify-between grow py-1 z-20'>
-								<div>
-									<h3 title={video.title} className='text-base md:text-lg font-semibold text-zinc-900 dark:text-zinc-50 line-clamp-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-150 leading-snug'>
+							<div className='flex flex-col justify-start grow min-w-0 py-0.5 sm:py-1 z-20'>
+								<div className='min-w-0 flex-1'>
+                                    <h3
+                                        title={video.title}
+                                        className='text-base md:text-lg font-semibold text-zinc-900 dark:text-zinc-50 line-clamp-2 wrap-break-word group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-150 leading-snug'
+                                    >
 										{video.title}
 									</h3>
 
 									{/* Views & Performance Data String */}
-									<p className='text-xs text-zinc-500 dark:text-zinc-400 mt-1.5 flex items-center gap-1.5'>
-										<Eye size={12} />
-										<span title={`${video.views.toLocaleString()} views`}>{video.views.toLocaleString()} views</span>
-										<span>•</span>
-										<span 
-											title={video.createdAt ? format(new Date(video.createdAt), 'HH:mm:ss') : ''}
+									<div className='text-xs text-zinc-500 dark:text-zinc-400 mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-1'>
+									    <span className='inline-flex items-center gap-1 shrink-0'>
+                                            <Eye size={12} />
+                                            <span title={`${video.views.toLocaleString()} views`}>
+                                                {video.views.toLocaleString()} views
+                                            </span>
+                                        </span>
+										<span className='shrink-0'>•</span>
+                                        <span 
+                                            className='wrap-break-word'
+											title={video.createdAt ? format(new Date(video.createdAt), 'PPpp') : ''}
 										>
-											{video.createdAt ? new Date(video.createdAt).toLocaleDateString(undefined,
-													{
-                                                        dateStyle: 'full'
-													},
-												)
-											: 'Recently'
-                                            }{' '}
-                                            ({formatDistanceToNow(new Date(video.createdAt), { addSuffix: true })})
+                                            {video.createdAt
+                                                ? formatDistanceToNow(new Date(video.createdAt), {
+                                                    addSuffix: true,
+                                                })
+                                                : 'Recently'}
 										</span>
-									</p>
+                                    </div>
 
 									{/* Creator Profile Strip */}
-									<div className='flex items-center gap-2 mt-4 relative'>
+									<div className='flex items-center gap-2 mt-3 sm:mt-4 min-w-0'>
 										<img
 											src={video.owner.avatar}
-											alt=''
-											className='h-6 w-6 rounded-full object-cover border border-zinc-200 dark:border-zinc-700'
+											alt={video.owner.username}
+											title={video.owner.username}
+											className='size-6 shrink-0 rounded-full object-cover border border-zinc-200 dark:border-zinc-700'
 										/>
 										<Link
 											to={`/c/${video.owner.username}`}
@@ -162,14 +168,13 @@ const WatchHistory = () => {
 
 									{/* Description summary */}
 									<p
-										className='text-xs md:text-sm text-zinc-500 dark:text-zinc-400 mt-3 truncate hidden sm:block max-w-2xl font-normal leading-relaxed'
+										className='text-xs md:text-sm text-zinc-500 dark:text-zinc-400 mt-2.5 sm:mt-3 line-clamp-2 wrap-break-word max-w-2xl font-normal leading-relaxed'
 										title={video.description}
 									>
 										{video.description}
 									</p>
 								</div>
 							</div>
-
 						</div>
 					))}
 				</div>

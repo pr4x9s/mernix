@@ -283,8 +283,13 @@ const Register = () => {
 							<Button 
 								type='submit'
 								disabled={isPending}
+                                as='button'
+                                variant='primary'
+                                fullWidth={true}
+                                className={`mt-8 mb-5 ${isPending ? 'active:scale-none' : ''}`}
 								title={isPending ? 'Processing Registration...' : 'Create Account'}
-								className={`mt-8 mb-5 ${isPending ? 'active:scale-none' : ''}`}
+								aria-label={isPending ? 'Processing Registration...' : 'Create Account'}
+                                role='button'
 							>
 								{isPending ? (
 									<>
@@ -301,7 +306,10 @@ const Register = () => {
 									Already a member?{' '}
 									<Link
 										to='/login'
-										className='text-purple-600 hover:underline font-semibold'
+                                        className='text-purple-600 hover:underline font-semibold'
+										title='Sign In'
+                                        aria-label='Sign In'
+										role='link'
 									>
 										Sign In
 									</Link>

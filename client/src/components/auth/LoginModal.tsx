@@ -48,30 +48,42 @@ const LoginModal = () => {
 
 				<div className='flex flex-col gap-3'>
 					<Button
-						type='button'
-						onClick={handleGoToFullLogin}
+                        type='button'
+                        variant='primary'
+						fullWidth={true}
+                        onClick={handleGoToFullLogin}
+                        title='Sign in'
+                        aria-label='Sign in'
+						role='button'
 					>
 						Sign in
 					</Button>
 					<Button
-						type='button'
+                        type='button'
+                        variant='secondary'
+                        fullWidth={true}
 						onClick={() => setLoginModalOpen(false)}
-						className='bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white shadow-zinc-500/20'
+                        title='Maybe Later'
+                        aria-label='Maybe Later'
+						role='button'
 					>
 						Maybe Later
 					</Button>
 				</div>
 
-				<Link
-					to='/register'
-					className='mt-6 text-xs text-zinc-400 block'
-					onClick={() => setLoginModalOpen(false)}
-				>
-					New here?{' '}
-					<span className='text-purple-500 cursor-pointer hover:underline font-medium'>
-						Create an account
-					</span>
-				</Link>
+                <p className='text-xs mt-6 text-zinc-400'>
+                    New Here?{' '}
+                    <Link
+                        to='/register'
+                        onClick={() => setLoginModalOpen(false)}
+                        className='text-purple-500 cursor-pointer hover:underline font-medium'
+                        title='Create an account'
+                        aria-label='Create an account'
+                        role='link'
+                    >
+                        Create an account
+                    </Link>
+                </p>
 			</div>
 		</div>
 	)

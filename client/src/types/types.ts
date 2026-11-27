@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
+import type { ReactNode } from 'react';
 
 export interface Config {
     baseUrl: string;
@@ -43,7 +44,7 @@ export interface ConfirmationModalProps {
 	onClose: () => void;
 	onConfirm: () => void;
 	title: string;
-	description: string;
+	description: ReactNode;
 	confirmText?: string;
 	cancelText?: string;
 	isPending?: boolean;
@@ -132,6 +133,22 @@ export type LikedVideosPaginatedResponse = PaginatedResponse<VideoFeedItem>;
 
 export type GetLikedVideosQueryParams = GetVideosQueryParams;
 
+export interface ToggleSubscriptionResponse {
+    isSubscribed: boolean;
+}
+
+export interface SubscribedChannelItem {
+    _id: string;
+    channel: SubscribedChannel;
+    createdAt: string;
+}
+
+export interface ChannelSubscriberItem {
+    _id: string;
+    subscriber: ChannelSubscriberUser;
+    createdAt: string;
+}
+
 // ========= Utility based types =========
 
 // export type LoginData = Pick<User, 'password'> & {
@@ -175,5 +192,18 @@ export interface VideoDetailsResponse extends Omit<Video, 'owner'> {
     likesCount: boolean;
     isLiked: boolean;
 }
+
+export type SubscribedChannel = Pick<User, 'firstName' | 'lastName' | 'username' | 'avatar'> & {
+    _id: string;
+    totalVideos: number;
+};
+
+export type ChannelSubscriberUser = Pick<User, 'firstName' | 'lastName' | 'username' | 'avatar'> & {
+    _id: string;
+};
+
+export type SubscribedChannelsPaginatedResponse = PaginatedResponse<SubscribedChannelItem>;
+
+export type ChannelSubscribersPaginatedResponse = PaginatedResponse<ChannelSubscriberItem>;
 
 // ========= Utility based types =========

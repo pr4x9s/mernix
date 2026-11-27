@@ -3,7 +3,7 @@ import './index.css'
 import App from './App.tsx'
 import { Suspense } from 'react'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router'
-import { Channel, CreatorDashboard, Home, LikedVideos, Login, ProfileSettings, Register, SearchResults, WatchHistory } from './pages/index.ts'
+import { Channel, CreatorDashboard, Home, LikedVideos, Login, ProfileSettings, Register, SearchResults, WatchHistory, Subscriptions } from './pages/index.ts'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from './providers/AuthProvider.tsx'
 import { AuthLayout, DashboardLayout } from './components/layouts/index.ts'
@@ -14,105 +14,135 @@ const queryClient = new QueryClient();
 
 // TypeScript only:
 declare global {
-  interface Window {
-    __TANSTACK_QUERY_CLIENT__:import('@tanstack/query-core').QueryClient
-  }
+    interface Window {
+        __TANSTACK_QUERY_CLIENT__: import('@tanstack/query-core').QueryClient
+    }
 }
 
 window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    children: [
-      {
+    {
         path: '/',
-        element: <DashboardLayout />,
+        element: <App />,
         children: [
-          {
-            index: true,
-            element: <Suspense><Home /></Suspense>
-          },
-          {
-            path: 'c/:username',
-            element: (
-              <AuthLayout authentication={true}>
-                <Suspense><Channel /></Suspense>
-              </AuthLayout>
-            )
-          },
-          {
-            path: 'settings',
-            element: (
-              <AuthLayout authentication={true}>
-                <Suspense><ProfileSettings /></Suspense>
-              </AuthLayout>
-            )
-          },
-          {
-            path: 'watch-history',
-            element: (
-              <AuthLayout authentication={true}>
-                <Suspense><WatchHistory /></Suspense>
-              </AuthLayout>
-            )
-          },
-          {
-            path: 'liked-videos',
-            element: (
-              <AuthLayout authentication={true}>
-                <Suspense><LikedVideos /></Suspense>
-              </AuthLayout>
-            )
-          },
-          {
-            path: 'search',
-            element: (
-              <AuthLayout authentication={true}>
-                <Suspense><SearchResults /></Suspense>
-              </AuthLayout>
-            )
-          },
-          {
-            path: 'studio',
-            element: (
-              <AuthLayout authentication={true}>
-                <Suspense><CreatorDashboard /></Suspense>
-              </AuthLayout>
-            )
-          },
-        ]
-      },
-      {
-        path: 'login',
-        element: (
-          <AuthLayout authentication={false}>
-            <Suspense><Login /></Suspense>
-          </AuthLayout>
-        )
-      },
-      {
-        path: 'register',
-        element: (
-          <AuthLayout authentication={false}>
-            <Suspense><Register /></Suspense>
-          </AuthLayout>
-        )
-      },
-      {
-        path: '*',
-        element: <Navigate to='/' replace />
-      }
-    ]
-  }
+            {
+                path: '/',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <Suspense>
+                                <Home />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'c/:username',
+                        element: (
+                            <AuthLayout authentication={true}>
+                                <Suspense>
+                                    <Channel />
+                                </Suspense>
+                            </AuthLayout>
+                        ),
+                    },
+                    {
+                        path: 'settings',
+                        element: (
+                            <AuthLayout authentication={true}>
+                                <Suspense>
+                                    <ProfileSettings />
+                                </Suspense>
+                            </AuthLayout>
+                        ),
+                    },
+                    {
+                        path: 'watch-history',
+                        element: (
+                            <AuthLayout authentication={true}>
+                                <Suspense>
+                                    <WatchHistory />
+                                </Suspense>
+                            </AuthLayout>
+                        ),
+                    },
+                    {
+                        path: 'liked-videos',
+                        element: (
+                            <AuthLayout authentication={true}>
+                                <Suspense>
+                                    <LikedVideos />
+                                </Suspense>
+                            </AuthLayout>
+                        ),
+                    },
+                    {
+                        path: 'subscriptions',
+                        element: (
+                            <AuthLayout authentication={true}>
+                                <Suspense>
+                                    <Subscriptions />
+                                </Suspense>
+                            </AuthLayout>
+                        ),
+                    },
+                    {
+                        path: 'search',
+                        element: (
+                            <AuthLayout authentication={true}>
+                                <Suspense>
+                                    <SearchResults />
+                                </Suspense>
+                            </AuthLayout>
+                        ),
+                    },
+                    {
+                        path: 'studio',
+                        element: (
+                            <AuthLayout authentication={true}>
+                                <Suspense>
+                                    <CreatorDashboard />
+                                </Suspense>
+                            </AuthLayout>
+                        ),
+                    },
+                ],
+            },
+            {
+                path: 'login',
+                element: (
+                    <AuthLayout authentication={false}>
+                        <Suspense>
+                            <Login />
+                        </Suspense>
+                    </AuthLayout>
+                ),
+            },
+            {
+                path: 'register',
+                element: (
+                    <AuthLayout authentication={false}>
+                        <Suspense>
+                            <Register />
+                        </Suspense>
+                    </AuthLayout>
+                ),
+            },
+            {
+                path: '*',
+                element: <Navigate to='/' replace />,
+            },
+        ],
+    },
 ]);
 
 createRoot(document.getElementById('root')!).render(
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  </QueryClientProvider>
-)
+    <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+            <RouterProvider router={router} />
+        </AuthProvider>
+    </QueryClientProvider>,
+);
